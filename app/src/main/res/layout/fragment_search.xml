@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <EditText
+        android:id="@+id/searchBarEditText"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="2dp"
+        android:background="@drawable/search_bar_background"
+        android:backgroundTint="@null"
+        android:textColor="@color/black"
+        android:hint="@string/search_bar_hint"
+        android:textColorHint="#494949"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/entireCategoryTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/search_selected_category_background"
+        android:gravity="center"
+        android:paddingHorizontal="10dp"
+        android:text="@string/search_entire_category"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/searchBarEditText"
+        app:layout_constraintTop_toBottomOf="@+id/searchBarEditText" />
+
+    <TextView
+        android:id="@+id/musicTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/search_default_category_background"
+        android:gravity="center"
+        android:paddingHorizontal="10dp"
+        android:text="@string/search_music_category"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/entireCategoryTextView"
+        app:layout_constraintTop_toBottomOf="@+id/searchBarEditText" />
+
+    <TextView
+        android:id="@+id/sportTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/search_default_category_background"
+        android:gravity="center"
+        android:paddingHorizontal="10dp"
+        android:text="@string/search_sport_category"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/musicTextView"
+        app:layout_constraintTop_toBottomOf="@+id/searchBarEditText" />
+
+    <TextView
+        android:id="@+id/movieTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/search_default_category_background"
+        android:gravity="center"
+        android:paddingHorizontal="10dp"
+        android:text="@string/search_movie_category"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/sportTextView"
+        app:layout_constraintTop_toBottomOf="@+id/searchBarEditText" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchResultRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entireCategoryTextView" />
+
+    <TextView
+        android:id="@+id/searchResultNoticeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_result_not_exist"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entireCategoryTextView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
