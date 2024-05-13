@@ -9,7 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kr.camp.youtube.databinding.ActivityMainBinding
 import java.lang.IndexOutOfBoundsException
 
-class MainActivity : AppCompatActivity() {
+class  MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
