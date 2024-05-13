@@ -5,4 +5,7 @@
     <color name="blue">#1E88E5</color>
     <color name="red">#E53935</color>
     <color name="gray">#707070</color>
+    <color name="search_bar_background">#F4F4F4</color>
+    <color name="search_category_background">#F4F4F4</color>
+    <color name="channel_name">#5B5B5B</color>
 </resources>
