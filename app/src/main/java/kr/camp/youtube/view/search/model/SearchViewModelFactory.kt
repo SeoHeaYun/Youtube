@@ -1,4 +1,4 @@
-package kr.camp.youtube.view.search
+package kr.camp.youtube.view.search.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
