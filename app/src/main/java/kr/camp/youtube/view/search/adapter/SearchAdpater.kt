@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemSearchBinding
+import kr.camp.youtube.extension.toSpanned
 import kr.camp.youtube.view.search.state.item.SearchListItem
 
 class SearchAdpater(
@@ -27,7 +28,7 @@ class SearchAdpater(
 
         fun bind(searchListItem: SearchListItem) = with(binding) {
             glide.load(searchListItem.thumbnailUrl).into(thumbnailImageView)
-            videoTitleTextView.text = searchListItem.videoTitle
+            videoTitleTextView.text = searchListItem.videoTitle.toSpanned()
             channelNameTextView.text = searchListItem.channelName
         }
     }
