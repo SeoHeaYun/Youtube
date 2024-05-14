@@ -21,7 +21,7 @@ fun SearchResponse.toEntity(): SearchEntity {
         eTag = eTag,
         nextPageToken = nextPageToken,
         regionCode = regionCode,
-        pageInfo = pageInfo.toEntity(),
+        pageInfo = pageInfo?.toEntity(),
         items = items.map(ItemResponse::toEntity),
     )
 }
@@ -37,7 +37,7 @@ fun ItemResponse.toEntity(): ItemEntity {
     return ItemEntity(
         kind = kind,
         eTag = eTag,
-        id = id.toEntity(),
+        id = id?.toEntity(),
         snippet = snippet.toEntity()
     )
 }

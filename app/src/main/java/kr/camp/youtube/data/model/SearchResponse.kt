@@ -4,33 +4,33 @@ import com.google.gson.annotations.SerializedName
 
 data class SearchResponse(
     @SerializedName("kind")
-    val kind: String,
+    val kind: String?,
     @SerializedName("etag")
-    val eTag: String,
+    val eTag: String?,
     @SerializedName("nextPageToken")
-    val nextPageToken: String,
+    val nextPageToken: String?,
     @SerializedName("regionCode")
-    val regionCode: String,
+    val regionCode: String?,
     @SerializedName("pageInfo")
-    val pageInfo: PageInfoResponse,
+    val pageInfo: PageInfoResponse?,
     @SerializedName("items")
     val items: List<ItemResponse>
 )
 
 data class PageInfoResponse(
     @SerializedName("totalResults")
-    val totalResults: Int,
+    val totalResults: Int?,
     @SerializedName("resultsPerPage")
-    val resultsPerPage: Int
+    val resultsPerPage: Int?
 )
 
 data class ItemResponse(
     @SerializedName("kind")
-    val kind: String,
+    val kind: String?,
     @SerializedName("etag")
-    val eTag: String,
+    val eTag: String?,
     @SerializedName("id")
-    val id: IdResponse,
+    val id: IdResponse?,
     @SerializedName("snippet")
     val snippet: SnippetResponse
 )

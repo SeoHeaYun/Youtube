@@ -10,7 +10,7 @@ interface SearchDataSource {
     @GET("search")
     suspend fun getSearch(
         @Query("q") query: String,
-        @Query("maxResults") maxResults: Int = 10,
+        @Query("maxResults") maxResults: Int = 30,
         @Query("type") type: String = "video",
         @Query("part") part: String = "snippet",
         @Query("key") apiKey: String = BuildConfig.YOUTUBE_API_KEY

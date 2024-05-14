@@ -1,23 +1,23 @@
 package kr.camp.youtube.domain.model
 
 data class SearchEntity(
-    val kind: String,
-    val eTag: String,
-    val nextPageToken: String,
-    val regionCode: String,
-    val pageInfo: PageInfoEntity,
+    val kind: String?,
+    val eTag: String?,
+    val nextPageToken: String?,
+    val regionCode: String?,
+    val pageInfo: PageInfoEntity?,
     val items: List<ItemEntity>
 )
 
 data class PageInfoEntity(
-    val totalResults: Int,
-    val resultsPerPage: Int
+    val totalResults: Int?,
+    val resultsPerPage: Int?
 )
 
 data class ItemEntity(
-    val kind: String,
-    val eTag: String,
-    val id: IdEntity,
+    val kind: String?,
+    val eTag: String?,
+    val id: IdEntity?,
     val snippet: SnippetEntity
 )
 
