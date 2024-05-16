@@ -58,7 +58,9 @@ class SearchFragment : Fragment() {
     private fun registerViewModelEvent() = with(binding) {
         viewLifecycleOwner.lifecycleScope.launch {
             searchViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
-                searchProgressBar.isVisible = uiState is SearchUiState.Loading
+                val isLoading = uiState is SearchUiState.Loading
+                searchBarEditText.isEnabled = !isLoading
+                searchProgressBar.isVisible = isLoading
                 searchResultNoticeTextView.isVisible = uiState is SearchUiState.Notice
                 searchResultRecyclerView.isVisible = uiState is SearchUiState.ResultList
                 when (uiState) {
@@ -99,10 +101,7 @@ class SearchFragment : Fragment() {
 
     private fun hideKeyboard() = activity?.let {
         val manager = it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        manager.hideSoftInputFromWindow(
-            it.currentFocus?.windowToken,
-            InputMethodManager.HIDE_NOT_ALWAYS
-        )
+        manager.hideSoftInputFromWindow(it.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     override fun onDestroyView() {
