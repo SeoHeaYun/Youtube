@@ -1,4 +1,4 @@
-package kr.camp.youtube
+package kr.camp.youtube.view.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,8 +1,8 @@
-package kr.camp.youtube.domain.repository
+package kr.camp.youtube.data.repository
 
 import kr.camp.youtube.data.model.SearchResponse
 import kr.camp.youtube.data.remote.SearchDataSource
-import kr.camp.youtube.data.repository.SearchRepository
+import kr.camp.youtube.domain.repository.SearchRepository
 
 class SearchRepositoryImpl(
     private val searchDataSource: SearchDataSource

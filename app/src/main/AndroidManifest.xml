@@ -14,10 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YouTube">
         <activity
-            android:name=".VideoDetailActivity"
+            android:name=".view.detail.VideoDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.main.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.YouTube"
             android:windowSoftInputMode="adjustPan">
