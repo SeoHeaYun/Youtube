@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -20,6 +21,7 @@ import kr.camp.youtube.databinding.FragmentSearchBinding
 import kr.camp.youtube.view.search.adapter.SearchAdpater
 import kr.camp.youtube.view.search.model.SearchViewModel
 import kr.camp.youtube.view.search.model.SearchViewModelFactory
+import kr.camp.youtube.view.search.state.SearchUiState
 
 class SearchFragment : Fragment() {
 
@@ -29,9 +31,6 @@ class SearchFragment : Fragment() {
     private val searchViewModel: SearchViewModel by viewModels { SearchViewModelFactory() }
 
     private lateinit var searchAdapter: SearchAdpater
-
-    private val searchResultNoticeTextView get() = binding.searchResultNoticeTextView
-    private val searchResultRecyclerView get() = binding.searchResultRecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,42 +48,52 @@ class SearchFragment : Fragment() {
         registerSearchBar()
     }
 
-    private fun registerRecyclerView() = with(searchResultRecyclerView) {
+    private fun registerRecyclerView() = with(binding.searchResultRecyclerView) {
         layoutManager = LinearLayoutManager(context)
         adapter = SearchAdpater {}.apply {
             searchAdapter = this
         }
     }
 
-    private fun registerViewModelEvent() = viewLifecycleOwner.lifecycleScope.launch {
-        searchViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
-            val items = uiState.items
-            if (items.isEmpty()) {
-                searchAdapter.update(emptyList())
-                searchResultNoticeTextView.visibility = View.VISIBLE
-                searchResultRecyclerView.visibility = View.GONE
-            } else {
-                searchAdapter.update(items)
-                searchResultNoticeTextView.visibility = View.GONE
-                searchResultRecyclerView.visibility = View.VISIBLE
+    private fun registerViewModelEvent() = with(binding) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            searchViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
+                searchProgressBar.isVisible = uiState is SearchUiState.Loading
+                searchResultNoticeTextView.isVisible = uiState is SearchUiState.Notice
+                searchResultRecyclerView.isVisible = uiState is SearchUiState.ResultList
+                when (uiState) {
+                    is SearchUiState.ResultEmpty -> searchAdapter.update(emptyList())
+                    is SearchUiState.ResultList -> {
+                        searchResultRecyclerView.scrollToPosition(0)
+                        searchAdapter.update(uiState.items)
+                    }
+                    is SearchUiState.Notice -> searchResultNoticeTextView.text = uiState.message
+                    else -> {}
+                }
             }
         }
     }
 
-    private fun registerSearchBar() {
-        val searchBarEditText = binding.searchBarEditText
-        searchBarEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if (searchBarEditText.text.isBlank()) {
-                    Toast.makeText(context, getString(R.string.search_blank_error), Toast.LENGTH_SHORT).show()
-                    return@setOnEditorActionListener true
-                }
+    private fun registerSearchBar() = with(binding) {
+        val search = {
+            if (searchBarEditText.text.isBlank()) {
+                Toast.makeText(context, getString(R.string.search_blank_error), Toast.LENGTH_SHORT)
+                    .show()
+            } else {
                 hideKeyboard()
                 searchBarEditText.clearFocus()
                 searchViewModel.onSearch(searchBarEditText.text.toString())
+            }
+        }
+        searchBarEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                search()
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
+        }
+        searchImageButton.setOnClickListener {
+            search()
         }
     }
 

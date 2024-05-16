@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.camp.youtube.domain.exception.NetworkException
 import kr.camp.youtube.domain.exception.QuotaExceededException
+import kr.camp.youtube.domain.exception.TimeoutException
 import kr.camp.youtube.domain.model.SearchEntity
 import kr.camp.youtube.domain.usecase.SearchUseCase
 import kr.camp.youtube.view.search.state.SearchUiState
@@ -29,13 +30,14 @@ class SearchViewModel(
                 if (items.isEmpty()) {
                     SearchUiState.ResultEmpty
                 } else {
-                    SearchUiState.Result(items)
+                    SearchUiState.ResultList(items)
                 }
             }
         }.onFailure { throwable ->
             _uiState.update {
                 when (throwable) {
                     is QuotaExceededException -> SearchUiState.QuotaExceeded
+                    is TimeoutException -> SearchUiState.Timeout
                     is NetworkException -> SearchUiState.Network
                     else -> SearchUiState.Unknown
                 }

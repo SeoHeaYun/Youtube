@@ -4,17 +4,23 @@ import kr.camp.youtube.view.search.state.item.SearchItem
 
 sealed interface SearchUiState {
 
-    data object ResultEmpty : SearchUiState
+    open class Notice(
+        val message: String
+    ) : SearchUiState
 
     data object Loading : SearchUiState
 
-    data object QuotaExceeded : SearchUiState
+    data object ResultEmpty : Notice("검색 결과 없음")
 
-    data object Network : SearchUiState
+    data object QuotaExceeded : Notice("API 사용량 초과")
 
-    data object Unknown : SearchUiState
+    data object Timeout : Notice("API 호출 실패")
 
-    data class Result(
+    data object Network : Notice("네트워크 오류")
+
+    data object Unknown : Notice("알 수 없는 오류")
+
+    data class ResultList(
         val items: List<SearchItem> = emptyList()
     ) : SearchUiState
 }
