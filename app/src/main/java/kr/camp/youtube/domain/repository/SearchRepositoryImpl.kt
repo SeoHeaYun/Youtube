@@ -3,12 +3,30 @@ package kr.camp.youtube.domain.repository
 import kr.camp.youtube.data.model.SearchResponse
 import kr.camp.youtube.data.remote.SearchDataSource
 import kr.camp.youtube.data.repository.SearchRepository
+import kr.camp.youtube.domain.exception.NetworkException
+import kr.camp.youtube.domain.exception.QuotaExceededException
+import kr.camp.youtube.domain.exception.UnknownException
+import kr.camp.youtube.domain.exception.UnknownHttpException
+import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 class SearchRepositoryImpl(
     private val searchDataSource: SearchDataSource
 ) : SearchRepository {
 
     override suspend fun getSearch(query: String): SearchResponse {
-        return searchDataSource.getSearch(query)
+        return try {
+            searchDataSource.getSearch(query)
+        } catch (e: HttpException) {
+            val message = e.message
+            throw when (val code = e.code()) {
+                403 -> QuotaExceededException(message)
+                else -> UnknownHttpException(code, message)
+            }
+        } catch (e: SocketTimeoutException) {
+            throw NetworkException(e.message)
+        } catch (e: Exception) {
+            throw UnknownException(e.message)
+        }
     }
 }

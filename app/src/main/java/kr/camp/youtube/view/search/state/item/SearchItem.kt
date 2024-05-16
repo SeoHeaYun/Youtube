@@ -1,6 +1,6 @@
 package kr.camp.youtube.view.search.state.item
 
-sealed interface SearchListItem {
+sealed interface SearchItem {
 
     val thumbnailUrl: String
 
@@ -12,5 +12,5 @@ sealed interface SearchListItem {
         override val thumbnailUrl: String,
         override val videoTitle: String,
         override val channelName: String
-    ) : SearchListItem
+    ) : SearchItem
 }
