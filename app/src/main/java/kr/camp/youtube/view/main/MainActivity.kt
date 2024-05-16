@@ -12,7 +12,7 @@ import kr.camp.youtube.databinding.ActivityMainBinding
 import kr.camp.youtube.view.home.HomeFragment
 import kr.camp.youtube.view.search.SearchFragment
 
-class  MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -46,8 +46,8 @@ class  MainActivity : AppCompatActivity() {
         val tabLayout = binding.tabLayout
 
         viewPager.apply {
-        adapter = ViewPagerAdapter(fragmentList, this@MainActivity)
-        isUserInputEnabled = false // Swipe unabled
+            adapter = ViewPagerAdapter(fragmentList, this@MainActivity)
+            isUserInputEnabled = false // Swipe unabled
         }
 
         // ViewPager2 - TabLayout
@@ -65,10 +65,11 @@ class  MainActivity : AppCompatActivity() {
             }
         })
     }
+
     private fun getIconResource(tabIndex: Int, currentPosition: Int): Int {
         return if (tabIndex == currentPosition) blackIcons[tabIndex] else whiteIcons[tabIndex]
-        }
     }
+}
 
 
 

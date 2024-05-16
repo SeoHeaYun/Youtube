@@ -1,7 +1,5 @@
 package kr.camp.youtube.view.home.state
 
-import kr.camp.youtube.view.search.state.item.SearchListItem
-
 sealed  interface HomeChannelItem {
 
     val thumbnailUrl: String

@@ -3,7 +3,7 @@ package kr.camp.youtube.view.search.model
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import kr.camp.youtube.data.repository.SearchRepositoryImpl
+import kr.camp.youtube.domain.repository.SearchRepositoryImpl
 import kr.camp.youtube.domain.usecase.SearchUseCase
 import kr.camp.youtube.network.YoutubeRetrofitClient
 
