@@ -1,4 +1,4 @@
-package kr.camp.youtube
+package kr.camp.youtube.view.main
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
