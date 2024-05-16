@@ -1,6 +1,6 @@
 package kr.camp.youtube.domain.usecase
 
-import kr.camp.youtube.domain.repository.SearchRepository
+import kr.camp.youtube.data.repository.SearchRepository
 import kr.camp.youtube.domain.mapper.toEntity
 import kr.camp.youtube.domain.model.SearchEntity
 
