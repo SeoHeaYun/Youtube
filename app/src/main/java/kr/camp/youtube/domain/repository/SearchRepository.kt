@@ -1,4 +1,4 @@
-package kr.camp.youtube.data.repository
+package kr.camp.youtube.domain.repository
 
 import kr.camp.youtube.data.model.SearchResponse
 
