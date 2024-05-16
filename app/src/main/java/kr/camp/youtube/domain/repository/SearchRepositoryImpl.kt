@@ -20,20 +20,16 @@ class SearchRepositoryImpl(
         return try {
             searchDataSource.getSearch(query)
         } catch (e: HttpException) {
-            e.printStackTrace()
             val message = e.message
             throw when (val code = e.code()) {
                 403 -> QuotaExceededException(message)
                 else -> UnknownHttpException(code, message)
             }
         } catch (e: SocketTimeoutException) {
-            e.printStackTrace()
             throw TimeoutException(e.message)
         } catch (e: UnknownHostException) {
-            e.printStackTrace()
             throw NetworkException(e.message)
         } catch (e: Exception) {
-            e.printStackTrace()
             throw UnknownException(e.message)
         }
     }
