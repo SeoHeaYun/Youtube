@@ -1,7 +1,7 @@
 package kr.camp.youtube
 
 import kotlinx.coroutines.runBlocking
-import kr.camp.youtube.domain.repository.SearchRepositoryImpl
+import kr.camp.youtube.data.repository.SearchRepositoryImpl
 import kr.camp.youtube.network.YoutubeRetrofitClient
 import org.junit.Test
 

@@ -32,8 +32,8 @@
         app:tabIndicatorGravity="bottom"
         app:tabIndicatorHeight="5dp"
         app:tabIndicatorFullWidth="true"
-        app:tabIndicatorColor="#000000"
-        app:tabRippleColor="#4CAF50"
+        app:tabIndicatorColor="@color/red"
+        app:tabRippleColor="#A5AAA6"
         />
 
 
