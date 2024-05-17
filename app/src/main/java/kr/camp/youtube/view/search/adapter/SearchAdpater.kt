@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemSearchBinding
 import kr.camp.youtube.extension.toSpanned
-import kr.camp.youtube.view.search.state.item.SearchListItem
+import kr.camp.youtube.view.search.state.item.SearchItem
 
 class SearchAdpater(
-    private val onItemClick: (SearchListItem) -> Unit = {}
+    private val onItemClick: (SearchItem) -> Unit = {}
 ) : RecyclerView.Adapter<SearchAdpater.SearchViewHolder>() {
 
     inner class SearchViewHolder(
@@ -21,19 +21,19 @@ class SearchAdpater(
 
         init {
             binding.root.setOnClickListener {
-                val searchListItem = searchListItems[adapterPosition]
+                val searchListItem = searchItems[adapterPosition]
                 onItemClick(searchListItem)
             }
         }
 
-        fun bind(searchListItem: SearchListItem) = with(binding) {
-            glide.load(searchListItem.thumbnailUrl).into(thumbnailImageView)
-            videoTitleTextView.text = searchListItem.videoTitle.toSpanned()
-            channelNameTextView.text = searchListItem.channelName
+        fun bind(searchItem: SearchItem) = with(binding) {
+            glide.load(searchItem.thumbnailUrl).into(thumbnailImageView)
+            videoTitleTextView.text = searchItem.videoTitle.toSpanned()
+            channelNameTextView.text = searchItem.channelName
         }
     }
 
-    private val searchListItems = mutableListOf<SearchListItem>()
+    private val searchItems = mutableListOf<SearchItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -41,17 +41,17 @@ class SearchAdpater(
         return SearchViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = searchListItems.size
+    override fun getItemCount(): Int = searchItems.size
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        val item = searchListItems[position]
+        val item = searchItems[position]
         holder.bind(item)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun update(searchListItems: List<SearchListItem>) {
-        this.searchListItems.clear()
-        this.searchListItems.addAll(searchListItems)
+    fun update(searchItems: List<SearchItem>) {
+        this.searchItems.clear()
+        this.searchItems.addAll(searchItems)
         notifyDataSetChanged()
     }
 }
