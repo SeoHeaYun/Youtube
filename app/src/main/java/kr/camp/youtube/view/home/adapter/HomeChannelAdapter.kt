@@ -7,20 +7,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemCategoryChannelBinding
-import kr.camp.youtube.view.home.state.HomeChannelItem
+import kr.camp.youtube.view.home.UserItem.HomeItem
 
 class HomeChannelAdapter(
-    private val onItemClick: (HomeChannelItem) -> Unit = {}
+    private val onItemClick: (HomeItem.ChannelItem) -> Unit = {}
 ) : RecyclerView.Adapter<HomeChannelAdapter.HomeChannelItemViewHolder>() {
 
-    private val homeChannelList = mutableListOf<HomeChannelItem>()
+    private val homeChannelList = mutableListOf<HomeItem.ChannelItem>()
 
     class HomeChannelItemViewHolder(
         var binding: ItemCategoryChannelBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val glide = Glide.with(binding.root)
-        fun bind(homeChannelItemPosition: HomeChannelItem) = with(binding) {
+        fun bind(homeChannelItemPosition: HomeItem.ChannelItem) = with(binding) {
             glide.load(homeChannelItemPosition.thumbnailUrl).into(thumbnailImageView)
             channelNameTextView.text = homeChannelItemPosition.channelName
         }
@@ -47,7 +47,7 @@ class HomeChannelAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun update(newHomeChannelList: List<HomeChannelItem>) {
+    fun update(newHomeChannelList: List<HomeItem.ChannelItem>) {
         this.homeChannelList.clear()
         this.homeChannelList.addAll(newHomeChannelList)
         notifyDataSetChanged()

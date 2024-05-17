@@ -1,4 +1,4 @@
-package kr.camp.youtube.myVideo.state
+package kr.camp.youtube.view.myVideo.state
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kr.camp.youtube.databinding.FragmentMyVideoBinding
-import kr.camp.youtube.myVideo.adapter.MyVideoAdapter
+import kr.camp.youtube.view.myVideo.adapter.MyVideoAdapter
 
 /**
  * A simple [Fragment] subclass.

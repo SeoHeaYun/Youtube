@@ -6,20 +6,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemCategoryVideoBinding
-import kr.camp.youtube.view.home.state.HomeVideoItem
+import kr.camp.youtube.view.home.UserItem.HomeItem
 
 class HomeVideoAdapter(
-    private val onItemClick: (HomeVideoItem) -> Unit = {}
+    private val onItemClick: (HomeItem.VideoItem) -> Unit = {}
 ) : RecyclerView.Adapter<HomeVideoAdapter.HomeVideoItemViewHolder>() {
 
-    private val homeVideolList = mutableListOf<HomeVideoItem>()
+    private val homeVideolList = mutableListOf<HomeItem.VideoItem>()
 
     class HomeVideoItemViewHolder(
         var binding: ItemCategoryVideoBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val glide = Glide.with(binding.root)
-        fun bind(homeVideoItemPosition: HomeVideoItem) = with(binding) {
+        fun bind(homeVideoItemPosition: HomeItem.VideoItem) = with(binding) {
             glide.load(homeVideoItemPosition.thumbnailUrl).into(thumbnailImageView)
             videoTitleTextView.text = homeVideoItemPosition.videoTitle
         }
@@ -45,7 +45,7 @@ class HomeVideoAdapter(
         }
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun update(newHomeVideoList: List<HomeVideoItem>) {
+    fun update(newHomeVideoList: List<HomeItem.VideoItem>) {
         this.homeVideolList.clear()
         this.homeVideolList.addAll(newHomeVideoList)
         notifyDataSetChanged()
