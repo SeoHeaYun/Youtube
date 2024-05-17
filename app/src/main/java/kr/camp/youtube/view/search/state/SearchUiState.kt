@@ -21,6 +21,7 @@ sealed interface SearchUiState {
     data object Unknown : Notice("알 수 없는 오류")
 
     data class ResultList(
-        val items: List<SearchItem> = emptyList()
+        val items: List<SearchItem> = emptyList(),
+        val nextPageToken: String? = null
     ) : SearchUiState
 }

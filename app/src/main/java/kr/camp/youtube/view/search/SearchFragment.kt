@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentSearchBinding
+import kr.camp.youtube.extension.addOnScrolled
 import kr.camp.youtube.view.search.adapter.SearchAdpater
 import kr.camp.youtube.view.search.model.SearchViewModel
 import kr.camp.youtube.view.search.model.SearchViewModelFactory
@@ -31,6 +32,10 @@ class SearchFragment : Fragment() {
     private val searchViewModel: SearchViewModel by viewModels { SearchViewModelFactory() }
 
     private lateinit var searchAdapter: SearchAdpater
+
+    private var beforeSearchInput: String? = null
+    private var searchInput: String? = null
+    private var nextPageToken: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,9 +54,25 @@ class SearchFragment : Fragment() {
     }
 
     private fun registerRecyclerView() = with(binding.searchResultRecyclerView) {
-        layoutManager = LinearLayoutManager(context)
+        val linearLayoutManager = LinearLayoutManager(context)
+        layoutManager = linearLayoutManager
         adapter = SearchAdpater {}.apply {
             searchAdapter = this
+        }
+        addOnScrolled { _, _, _ ->
+            val nextPageToken = nextPageToken
+            val lastVisibleItemPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition()
+            val itemTotalCount = searchAdapter.itemCount - 1
+            if (nextPageToken != null &&
+                !canScrollVertically(1) &&
+                lastVisibleItemPosition == itemTotalCount
+            ) {
+                val searchInput = searchInput
+                if (searchInput != null) {
+                    searchAdapter.removeLoading()
+                    searchViewModel.onSearch(searchInput, nextPageToken)
+                }
+            }
         }
     }
 
@@ -60,14 +81,22 @@ class SearchFragment : Fragment() {
             searchViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
                 val isLoading = uiState is SearchUiState.Loading
                 searchBarEditText.isEnabled = !isLoading
-                searchProgressBar.isVisible = isLoading
+                if (nextPageToken == null) {
+                    searchProgressBar.isVisible = isLoading
+                    searchResultRecyclerView.isVisible = uiState is SearchUiState.ResultList
+                }
                 searchResultNoticeTextView.isVisible = uiState is SearchUiState.Notice
-                searchResultRecyclerView.isVisible = uiState is SearchUiState.ResultList
                 when (uiState) {
-                    is SearchUiState.ResultEmpty -> searchAdapter.update(emptyList())
+                    is SearchUiState.ResultEmpty -> searchAdapter.clearItems()
                     is SearchUiState.ResultList -> {
-                        searchResultRecyclerView.scrollToPosition(0)
-                        searchAdapter.update(uiState.items)
+                        val searchItems = uiState.items
+                        nextPageToken = uiState.nextPageToken
+                        val hasNextPage = nextPageToken != null
+                        if (beforeSearchInput == searchInput) {
+                            searchAdapter.addItems(searchItems, hasNextPage)
+                        } else {
+                            searchAdapter.setItems(searchItems, hasNextPage)
+                        }
                     }
                     is SearchUiState.Notice -> searchResultNoticeTextView.text = uiState.message
                     else -> {}
@@ -79,12 +108,18 @@ class SearchFragment : Fragment() {
     private fun registerSearchBar() = with(binding) {
         val search = {
             if (searchBarEditText.text.isBlank()) {
-                Toast.makeText(context, getString(R.string.search_blank_error), Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(context, getString(R.string.search_blank_error), Toast.LENGTH_SHORT).show()
             } else {
                 hideKeyboard()
                 searchBarEditText.clearFocus()
-                searchViewModel.onSearch(searchBarEditText.text.toString())
+
+                beforeSearchInput = searchInput
+                val input = searchBarEditText.text.toString()
+                searchInput = input.ifEmpty { null }
+                nextPageToken = null
+
+                searchResultRecyclerView.scrollToPosition(0)
+                searchViewModel.onSearch(input)
             }
         }
         searchBarEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -101,7 +136,10 @@ class SearchFragment : Fragment() {
 
     private fun hideKeyboard() = activity?.let {
         val manager = it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        manager.hideSoftInputFromWindow(it.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        manager.hideSoftInputFromWindow(
+            it.currentFocus?.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
     }
 
     override fun onDestroyView() {

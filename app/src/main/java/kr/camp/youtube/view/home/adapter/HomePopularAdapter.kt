@@ -5,13 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kr.camp.youtube.databinding.ItemCategoryVideoBinding
 import kr.camp.youtube.databinding.ItemPopularVideoBinding
-import kr.camp.youtube.databinding.ItemSearchBinding
-import kr.camp.youtube.extension.toSpanned
 import kr.camp.youtube.view.home.state.HomePopularItem
-import kr.camp.youtube.view.home.state.HomeVideoItem
-import kr.camp.youtube.view.search.state.item.SearchListItem
 
 
 class HomePopularAdapter(
