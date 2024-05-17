@@ -41,12 +41,12 @@ class MyVideoFragment : Fragment() {
         val gridLayoutManager = GridLayoutManager(requireContext(),2)
         binding.recylclerView.layoutManager = gridLayoutManager
 
-        val videoList = listOf(
-            //좋아요 비디오 리스트
-        )
-
-        videoAdapter = MyVideoAdapter(videoList)
-        binding.recylclerView.adapter = videoAdapter
+//        val videoList = listOf(
+//            //좋아요 비디오 리스트
+//        )
+//
+//        videoAdapter = MyVideoAdapter(videoList)
+//        binding.recylclerView.adapter = videoAdapter
 
     }
 
