@@ -1,4 +1,4 @@
-package kr.camp.youtube.myVideo.model
+package kr.camp.youtube.view.myVideo.model
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

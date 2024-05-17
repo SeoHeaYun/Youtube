@@ -1,10 +1,10 @@
-package kr.camp.youtube.myVideo.adapter
+package kr.camp.youtube.view.myVideo.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.camp.youtube.domain.model.SearchEntity
 import kr.camp.youtube.myVideo.adaptder.MyVideoItem
-import kr.camp.youtube.myVideo.model.MyVideoViewholder
+import kr.camp.youtube.view.myVideo.model.MyVideoViewholder
 
 class MyVideoAdapter(private val videoList: List<MyVideoItem>) :
     RecyclerView.Adapter<MyVideoViewholder>() {
