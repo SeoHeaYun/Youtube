@@ -1,15 +1,18 @@
-package kr.camp.youtube
+package kr.camp.youtube.view.main
 
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import kr.camp.youtube.view.myvideo.MyVideoFragment
+import kr.camp.youtube.R
 import kr.camp.youtube.databinding.ActivityMainBinding
-import kr.camp.youtube.myVideo.state.MyVideoFragment
+import kr.camp.youtube.view.home.HomeFragment
 import kr.camp.youtube.view.search.SearchFragment
 
-class  MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -42,7 +45,10 @@ class  MainActivity : AppCompatActivity() {
         val viewPager = binding.viewPager
         val tabLayout = binding.tabLayout
 
-        viewPager.adapter = ViewPagerAdapter(fragmentList, this@MainActivity)
+        viewPager.apply {
+            adapter = ViewPagerAdapter(fragmentList, this@MainActivity)
+            isUserInputEnabled = false // Swipe unabled
+        }
 
         // ViewPager2 - TabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
@@ -62,8 +68,8 @@ class  MainActivity : AppCompatActivity() {
 
     private fun getIconResource(tabIndex: Int, currentPosition: Int): Int {
         return if (tabIndex == currentPosition) blackIcons[tabIndex] else whiteIcons[tabIndex]
-        }
     }
+}
 
 
 

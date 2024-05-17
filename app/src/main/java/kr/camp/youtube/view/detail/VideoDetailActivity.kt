@@ -1,4 +1,4 @@
-package kr.camp.youtube
+package kr.camp.youtube.view.detail
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
