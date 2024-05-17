@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.camp.youtube.databinding.ActivityMainBinding
+import kr.camp.youtube.myVideo.state.MyVideoFragment
 import kr.camp.youtube.view.search.SearchFragment
 
 class  MainActivity : AppCompatActivity() {
