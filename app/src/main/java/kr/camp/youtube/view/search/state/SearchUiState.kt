@@ -20,8 +20,20 @@ sealed interface SearchUiState {
 
     data object Unknown : Notice("알 수 없는 오류")
 
-    data class ResultList(
-        val items: List<SearchItem> = emptyList(),
-        val nextPageToken: String? = null
-    ) : SearchUiState
+    sealed interface ResultList : SearchUiState {
+
+        val items: List<SearchItem>
+
+        val nextPageToken: String?
+    }
+
+    data class ResultAddList(
+        override val items: List<SearchItem> = emptyList(),
+        override val nextPageToken: String? = null
+    ) : ResultList
+
+    data class ResultSetList(
+        override val items: List<SearchItem> = emptyList(),
+        override val nextPageToken: String? = null
+    ) : ResultList
 }

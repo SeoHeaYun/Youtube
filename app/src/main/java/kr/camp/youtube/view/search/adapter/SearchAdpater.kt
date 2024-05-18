@@ -103,6 +103,5 @@ class SearchAdpater(
 
     fun removeLoading() {
         searchItems.removeLastOrNull()
-        notifyItemRemoved(searchItems.size + 1)
     }
 }

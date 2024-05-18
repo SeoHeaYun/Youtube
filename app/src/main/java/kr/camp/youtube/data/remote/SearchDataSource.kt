@@ -11,7 +11,7 @@ interface SearchDataSource {
     @GET("search")
     suspend fun getSearch(
         @Query("q") query: String,
-        @Query("nextPageToken") nextPageToken: String?,
+        @Query("pageToken") pageToken: String?,
         @Query("maxResults") maxResults: Int = QueryUtil.RESULTS_PER_PAGE,
         @Query("type") type: String = "video",
         @Query("part") part: String = "snippet",

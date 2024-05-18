@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentSearchBinding
 import kr.camp.youtube.extension.addOnScrolled
+import kr.camp.youtube.util.QueryUtil
 import kr.camp.youtube.view.search.adapter.SearchAdpater
 import kr.camp.youtube.view.search.model.SearchViewModel
 import kr.camp.youtube.view.search.model.SearchViewModelFactory
@@ -33,8 +34,7 @@ class SearchFragment : Fragment() {
 
     private lateinit var searchAdapter: SearchAdpater
 
-    private var beforeSearchInput: String? = null
-    private var searchInput: String? = null
+    private var currentSearchInput: String? = null
     private var nextPageToken: String? = null
 
     override fun onCreateView(
@@ -59,18 +59,20 @@ class SearchFragment : Fragment() {
         adapter = SearchAdpater {}.apply {
             searchAdapter = this
         }
+        itemAnimator = null
         addOnScrolled { _, _, _ ->
             val nextPageToken = nextPageToken
             val lastVisibleItemPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition()
             val itemTotalCount = searchAdapter.itemCount - 1
             if (nextPageToken != null &&
+                itemTotalCount >= QueryUtil.RESULTS_PER_PAGE &&
                 !canScrollVertically(1) &&
                 lastVisibleItemPosition == itemTotalCount
             ) {
-                val searchInput = searchInput
+                val searchInput = currentSearchInput
                 if (searchInput != null) {
                     searchAdapter.removeLoading()
-                    searchViewModel.onSearch(searchInput, nextPageToken)
+                    searchViewModel.onSearch(searchInput, nextPageToken, false)
                 }
             }
         }
@@ -83,21 +85,17 @@ class SearchFragment : Fragment() {
                 searchBarEditText.isEnabled = !isLoading
                 if (nextPageToken == null) {
                     searchProgressBar.isVisible = isLoading
-                    searchResultRecyclerView.isVisible = uiState is SearchUiState.ResultList
+                    searchResultRecyclerView.isVisible = uiState is SearchUiState.ResultSetList
                 }
                 searchResultNoticeTextView.isVisible = uiState is SearchUiState.Notice
+                if (uiState is SearchUiState.ResultList) {
+                    nextPageToken = uiState.nextPageToken
+                }
+                val hasNextPage = nextPageToken != null
                 when (uiState) {
                     is SearchUiState.ResultEmpty -> searchAdapter.clearItems()
-                    is SearchUiState.ResultList -> {
-                        val searchItems = uiState.items
-                        nextPageToken = uiState.nextPageToken
-                        val hasNextPage = nextPageToken != null
-                        if (beforeSearchInput == searchInput) {
-                            searchAdapter.addItems(searchItems, hasNextPage)
-                        } else {
-                            searchAdapter.setItems(searchItems, hasNextPage)
-                        }
-                    }
+                    is SearchUiState.ResultSetList -> searchAdapter.setItems(uiState.items, hasNextPage)
+                    is SearchUiState.ResultAddList -> searchAdapter.addItems(uiState.items, hasNextPage)
                     is SearchUiState.Notice -> searchResultNoticeTextView.text = uiState.message
                     else -> {}
                 }
@@ -113,13 +111,12 @@ class SearchFragment : Fragment() {
                 hideKeyboard()
                 searchBarEditText.clearFocus()
 
-                beforeSearchInput = searchInput
                 val input = searchBarEditText.text.toString()
-                searchInput = input.ifEmpty { null }
+                currentSearchInput = input
                 nextPageToken = null
 
                 searchResultRecyclerView.scrollToPosition(0)
-                searchViewModel.onSearch(input)
+                searchViewModel.onSearch(input, set = true)
             }
         }
         searchBarEditText.setOnEditorActionListener { _, actionId, _ ->
