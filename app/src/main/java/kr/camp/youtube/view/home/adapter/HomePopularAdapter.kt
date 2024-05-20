@@ -5,31 +5,24 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kr.camp.youtube.databinding.ItemCategoryVideoBinding
 import kr.camp.youtube.databinding.ItemPopularVideoBinding
-import kr.camp.youtube.databinding.ItemSearchBinding
-import kr.camp.youtube.extension.toSpanned
 import kr.camp.youtube.view.home.state.HomePopularItem
-import kr.camp.youtube.view.home.state.HomeVideoItem
-import kr.camp.youtube.view.search.state.item.SearchListItem
-
 
 class HomePopularAdapter(
-    private val onItemClick: (HomePopularItem) -> Unit = {}
+    private val onItemClick: (HomeItem.PopularItem) -> Unit = {}
 ) : RecyclerView.Adapter<HomePopularAdapter.HomePopularItemViewHolder>() {
 
-    private val homePopularlList = mutableListOf<HomePopularItem>()
+    private val homePopularlList = mutableListOf<HomeItem.PopularItem>()
 
     class HomePopularItemViewHolder(
         var binding: ItemPopularVideoBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val glide = Glide.with(binding.root)
-        fun bind(homePopularItemPosition: HomePopularItem) = with(binding) {
+        fun bind(homePopularItemPosition: HomeItem.PopularItem) = with(binding) {
             glide.load(homePopularItemPosition.thumbnailUrl).into(thumbnailImageView)
             videoTitleTextView.text = homePopularItemPosition.videoTitle
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomePopularItemViewHolder {
@@ -51,7 +44,7 @@ class HomePopularAdapter(
         }
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun update(newHomePopularList: List<HomePopularItem>) {
+    fun update(newHomePopularList: List<HomeItem.PopularItem>) {
         this.homePopularlList.clear()
         this.homePopularlList.addAll(newHomePopularList)
         notifyDataSetChanged()

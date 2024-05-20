@@ -20,9 +20,27 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        registerRecyclerView()
+        registerViewModelEvent()
+    }
+
+    private fun registerRecyclerView() {
+
+    }
+
+    private fun registerViewModelEvent() {
+
+
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+
 
 }
