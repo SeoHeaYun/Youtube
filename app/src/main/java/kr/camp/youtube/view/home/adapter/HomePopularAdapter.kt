@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemPopularVideoBinding
-import kr.camp.youtube.view.home.UserItem.HomeItem
-
+import kr.camp.youtube.view.home.state.HomePopularItem
 
 class HomePopularAdapter(
     private val onItemClick: (HomeItem.PopularItem) -> Unit = {}
