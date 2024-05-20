@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemPopularVideoBinding
-import kr.camp.youtube.view.home.state.HomePopularItem
+import kr.camp.youtube.view.home.UserItem.HomeItem
 
 class HomePopularAdapter(
     private val onItemClick: (HomeItem.PopularItem) -> Unit = {}
@@ -43,6 +43,7 @@ class HomePopularAdapter(
 
         }
     }
+
     @SuppressLint("NotifyDataSetChanged")
     fun update(newHomePopularList: List<HomeItem.PopularItem>) {
         this.homePopularlList.clear()
