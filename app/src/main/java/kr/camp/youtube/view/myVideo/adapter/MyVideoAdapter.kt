@@ -42,7 +42,7 @@ class MyVideoAdapter(private var items: MutableList<LikeItemModel>) :
     }
 
     override fun getItemCount(): Int {
-        return videoList.size
+        return items.size
     }
 
     //뷰홀더
