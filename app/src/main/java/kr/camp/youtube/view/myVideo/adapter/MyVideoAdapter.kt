@@ -9,7 +9,6 @@ import kr.camp.youtube.data.model.ItemResponse
 import kr.camp.youtube.databinding.ItemMyVideoBinding
 import kr.camp.youtube.view.detail.VideoDetailActivity
 
-
 class MyVideoAdapter(private val videoList: List<ItemResponse>) :
     RecyclerView.Adapter<MyVideoAdapter.VideoViewHolder>() {
     class VideoViewHolder(val binding: ItemMyVideoBinding) : RecyclerView.ViewHolder(binding.root)

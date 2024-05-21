@@ -16,15 +16,16 @@ import kr.camp.youtube.view.myVideo.adapter.MyVideoAdapter
 
 class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
 
-    private var binding: FragmentMyVideoBinding? = null
+    private var _binding: FragmentMyVideoBinding? = null
+    private val binding get() = _binding!!
     private lateinit var videoAdapter: MyVideoAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMyVideoBinding.bind(view)
+        _binding = FragmentMyVideoBinding.bind(view)
 
         val gridLayoutManager = GridLayoutManager(requireContext(),2)
-        binding!!.recylclerView.layoutManager = gridLayoutManager
+        binding.recylclerView.layoutManager = gridLayoutManager
 
         fetchVideos()
     }
@@ -36,10 +37,14 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
             try {
                 val response = YoutubeRetrofitClient.searchDataSource.getSearch(
                     query = "Android development",
-                    apiKey = apiKey
+                    apiKey = apiKey,
+                    pageToken = "",
+                    maxResults = 0,
+                    type = "video",
+                    part = "snippet"
                 )
                 videoAdapter = MyVideoAdapter(response.items)
-                binding!!.recylclerView.adapter = videoAdapter
+                binding.recylclerView.adapter = videoAdapter
             } catch(e:Exception){
                 Toast.makeText(requireContext(),"영상을 불러오는데 실패하였습니다",Toast.LENGTH_SHORT).show()
             }
@@ -49,7 +54,7 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
     override fun onDestroyView(){
         super.onDestroyView()
         //메모리 누수를 방지하기 위해 뷰가 파괴될 때 바인딩 객체를 null로 설정
-        binding= null
+        _binding= null
     }
 
 
