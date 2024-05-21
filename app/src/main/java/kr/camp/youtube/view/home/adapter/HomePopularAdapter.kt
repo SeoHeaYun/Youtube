@@ -44,11 +44,5 @@ class HomePopularAdapter(
 
         }
     }
-    @SuppressLint("NotifyDataSetChanged")
-    fun update(newHomePopularList: List<HomeItem.PopularItem>) {
-        this.homePopularlList.clear()
-        this.homePopularlList.addAll(newHomePopularList)
-        notifyDataSetChanged()
-    }
 }
 

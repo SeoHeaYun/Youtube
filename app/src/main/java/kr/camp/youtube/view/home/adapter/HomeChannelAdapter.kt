@@ -10,7 +10,6 @@ import kr.camp.youtube.databinding.ItemCategoryChannelBinding
 import kr.camp.youtube.view.home.UserItem.HomeItem
 
 class HomeChannelAdapter(
-    private val onItemClick: (HomeItem.ChannelItem) -> Unit = {}
 ) : RecyclerView.Adapter<HomeChannelAdapter.HomeChannelItemViewHolder>() {
 
     private val homeChannelList = mutableListOf<HomeItem.ChannelItem>()
@@ -39,10 +38,6 @@ class HomeChannelAdapter(
         val itemPosition = homeChannelList[position]
         holder.apply {
             bind(itemPosition)
-            binding.root.setOnClickListener {
-                onItemClick(itemPosition)
-            }
-
         }
     }
 

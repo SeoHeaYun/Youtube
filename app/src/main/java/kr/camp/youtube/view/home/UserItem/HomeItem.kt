@@ -4,8 +4,6 @@ sealed interface HomeItem {
 
     val thumbnailUrl: String
 
-
-
     // HomeChannelAdapter
     data class ChannelItem(
         override val thumbnailUrl: String,

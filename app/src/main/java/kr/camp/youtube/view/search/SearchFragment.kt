@@ -50,7 +50,7 @@ class SearchFragment : Fragment() {
 
     private fun registerRecyclerView() = with(binding.searchResultRecyclerView) {
         layoutManager = LinearLayoutManager(context)
-        adapter = SearchAdpater {}.apply {
+        adapter = SearchAdpater{}.apply {
             searchAdapter = this
         }
     }
