@@ -1,6 +1,7 @@
 package kr.camp.youtube.network
 
 import kr.camp.youtube.data.remote.SearchDataSource
+import kr.camp.youtube.data.remote.VideoDataSource
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,4 +30,10 @@ object YoutubeRetrofitClient {
     val searchDataSource: SearchDataSource by lazy {
         retrofit.create(SearchDataSource::class.java)
     }
+
+    val videoDataSource: VideoDataSource by lazy {
+        retrofit.create(VideoDataSource::class.java)
+    }
+
+
 }
