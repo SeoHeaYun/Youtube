@@ -78,7 +78,6 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
                 )
 
                 //아이템 업데이트
-                response.items.also { videoAdapter.items = LikeItemModel }
                 videoAdapter.notifyDataSetChanged()
 
             } catch(e:Exception){
