@@ -10,18 +10,15 @@ import kr.camp.youtube.view.detail.model.OnLikeActionListner
 
 class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
-    private var items: MutableList<LikeItemModel> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         setupView()
 
-        binding.likeButton.setOnClickListener() {
-            val items = mutableListOf<ClipData.Item>()
-            val position = 0
+        val items = mutableListOf<ClipData.Item>()
+        val position = 0
 
-        }
     }
 
     private fun setupView() {
