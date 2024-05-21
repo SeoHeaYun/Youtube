@@ -1,28 +1,48 @@
 package kr.camp.youtube.view.myVideo.adapter
 
+import android.content.Intent
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kr.camp.youtube.domain.model.SearchEntity
-import kr.camp.youtube.myVideo.adaptder.MyVideoItem
-import kr.camp.youtube.view.myVideo.model.MyVideoViewholder
+import com.bumptech.glide.Glide
+import kr.camp.youtube.data.model.ItemResponse
+import kr.camp.youtube.databinding.ItemMyVideoBinding
+import kr.camp.youtube.view.detail.VideoDetailActivity
 
-class MyVideoAdapter(private val videoList: List<MyVideoItem>) :
-    RecyclerView.Adapter<MyVideoViewholder>() {
+class MyVideoAdapter(private val videoList: List<ItemResponse>) :
+    RecyclerView.Adapter<MyVideoAdapter.VideoViewHolder>() {
+    class VideoViewHolder(val binding: ItemMyVideoBinding) : RecyclerView.ViewHolder(binding.root)
 
-    lateinit var itemClick: ItemClick
-    private var likedVideos: MutableList<SearchEntity> = mutableListOf()
-
-    interface ItemClick {
-        fun onClick()
-        //디테일프래그먼트 연결
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
+        val binding = ItemMyVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return VideoViewHolder(binding)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyVideoViewholder {
-        return MyVideoViewholder.from(parent)
-    }
+    override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
+        val video = videoList[position]
+        val thumbnailUrl = video.snippet.thumbnails.high.url
+        val title = video.snippet.title
+        val channeltitle = video.snippet.channelTitle
 
-    override fun onBindViewHolder(holder: MyVideoViewholder, position: Int) {
-        holder.bind(videoList[position])
+        //썸네일 이미지 로딩
+        Glide.with(holder.binding.imageViewThumbnail.context)
+            .load(thumbnailUrl)
+            .into(holder.binding.imageViewThumbnail)
+
+        //텍스트뷰 로딩
+        holder.binding.textViewTitle.text = title
+        holder.binding.textViewTitle.text = channeltitle
+
+        //디테일 엑티비티
+        holder.binding.root.setOnClickListener{
+            val context = holder.binding.root.context
+            val intent = Intent(context, VideoDetailActivity::class.java).apply {
+                putExtra("VIDEO_TITLE",video.snippet.title)
+                putExtra("VIDEO_DESCRIPTION", video.snippet.description)
+            }
+
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {

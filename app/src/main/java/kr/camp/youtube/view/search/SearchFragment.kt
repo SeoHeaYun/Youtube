@@ -18,6 +18,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentSearchBinding
+import kr.camp.youtube.extension.addOnScrolled
+import kr.camp.youtube.util.QueryUtil
 import kr.camp.youtube.view.search.adapter.SearchAdpater
 import kr.camp.youtube.view.search.model.SearchViewModel
 import kr.camp.youtube.view.search.model.SearchViewModelFactory
@@ -31,6 +33,9 @@ class SearchFragment : Fragment() {
     private val searchViewModel: SearchViewModel by viewModels { SearchViewModelFactory() }
 
     private lateinit var searchAdapter: SearchAdpater
+
+    private var currentSearchInput: String? = null
+    private var nextPageToken: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,62 +55,109 @@ class SearchFragment : Fragment() {
 
     private fun registerRecyclerView() = with(binding.searchResultRecyclerView) {
         layoutManager = LinearLayoutManager(context)
-        adapter = SearchAdpater{}.apply {
-            searchAdapter = this
-        }
-    }
-
-    private fun registerViewModelEvent() = with(binding) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            searchViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
-                val isLoading = uiState is SearchUiState.Loading
-                searchBarEditText.isEnabled = !isLoading
-                searchProgressBar.isVisible = isLoading
-                searchResultNoticeTextView.isVisible = uiState is SearchUiState.Notice
-                searchResultRecyclerView.isVisible = uiState is SearchUiState.ResultList
-                when (uiState) {
-                    is SearchUiState.ResultEmpty -> searchAdapter.update(emptyList())
-                    is SearchUiState.ResultList -> {
-                        searchResultRecyclerView.scrollToPosition(0)
-                        searchAdapter.update(uiState.items)
+        adapter = SearchAdpater {}.apply {
+            val linearLayoutManager = LinearLayoutManager(context)
+            layoutManager = linearLayoutManager
+            adapter = SearchAdpater {}.apply {
+                searchAdapter = this
+            }
+            itemAnimator = null
+            addOnScrolled { _, _, _ ->
+                val nextPageToken = nextPageToken
+                val lastVisibleItemPosition =
+                    linearLayoutManager.findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = searchAdapter.itemCount - 1
+                if (nextPageToken != null &&
+                    itemTotalCount >= QueryUtil.RESULTS_PER_PAGE &&
+                    !canScrollVertically(1) &&
+                    lastVisibleItemPosition == itemTotalCount
+                ) {
+                    val searchInput = currentSearchInput
+                    if (searchInput != null) {
+                        searchAdapter.removeLoading()
+                        searchViewModel.onSearch(searchInput, nextPageToken, false)
                     }
-                    is SearchUiState.Notice -> searchResultNoticeTextView.text = uiState.message
-                    else -> {}
                 }
             }
         }
     }
 
-    private fun registerSearchBar() = with(binding) {
-        val search = {
-            if (searchBarEditText.text.isBlank()) {
-                Toast.makeText(context, getString(R.string.search_blank_error), Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                hideKeyboard()
-                searchBarEditText.clearFocus()
-                searchViewModel.onSearch(searchBarEditText.text.toString())
+        private fun registerViewModelEvent() = with(binding) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                searchViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
+                    val isLoading = uiState is SearchUiState.Loading
+                    searchBarEditText.isEnabled = !isLoading
+                    if (nextPageToken == null) {
+                        searchProgressBar.isVisible = isLoading
+                        searchResultRecyclerView.isVisible = uiState is SearchUiState.ResultSetList
+                    }
+                    searchResultNoticeTextView.isVisible = uiState is SearchUiState.Notice
+                    if (uiState is SearchUiState.ResultList) {
+                        nextPageToken = uiState.nextPageToken
+                    }
+                    val hasNextPage = nextPageToken != null
+                    when (uiState) {
+                        is SearchUiState.ResultEmpty -> searchAdapter.clearItems()
+                        is SearchUiState.ResultSetList -> searchAdapter.setItems(
+                            uiState.items,
+                            hasNextPage
+                        )
+
+                        is SearchUiState.ResultAddList -> searchAdapter.addItems(
+                            uiState.items,
+                            hasNextPage
+                        )
+
+                        is SearchUiState.Notice -> searchResultNoticeTextView.text = uiState.message
+                        else -> {}
+                    }
+                }
             }
         }
-        searchBarEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+        private fun registerSearchBar() = with(binding) {
+            val search = {
+                if (searchBarEditText.text.isBlank()) {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.search_blank_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    hideKeyboard()
+                    searchBarEditText.clearFocus()
+
+                    val input = searchBarEditText.text.toString()
+                    currentSearchInput = input
+                    nextPageToken = null
+
+                    searchResultRecyclerView.scrollToPosition(0)
+                    searchViewModel.onSearch(input, set = true)
+                }
+            }
+            searchBarEditText.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    search()
+                    return@setOnEditorActionListener true
+                }
+                return@setOnEditorActionListener false
+            }
+            searchImageButton.setOnClickListener {
                 search()
-                return@setOnEditorActionListener true
             }
-            return@setOnEditorActionListener false
         }
-        searchImageButton.setOnClickListener {
-            search()
+
+        private fun hideKeyboard() = activity?.let {
+            val manager = it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            manager.hideSoftInputFromWindow(
+                it.currentFocus?.windowToken,
+                InputMethodManager.HIDE_NOT_ALWAYS
+            )
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
         }
     }
 
-    private fun hideKeyboard() = activity?.let {
-        val manager = it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        manager.hideSoftInputFromWindow(it.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-}

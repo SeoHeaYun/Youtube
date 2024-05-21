@@ -15,10 +15,9 @@ import java.net.UnknownHostException
 class SearchRepositoryImpl(
     private val searchDataSource: SearchDataSource
 ) : SearchRepository {
-
-    override suspend fun getSearch(query: String): SearchResponse {
+    override suspend fun getSearch(query: String, nextPageToken: String?): SearchResponse {
         return try {
-            searchDataSource.getSearch(query)
+            searchDataSource.getSearch(query, nextPageToken)
         } catch (e: HttpException) {
             val message = e.message
             throw when (val code = e.code()) {

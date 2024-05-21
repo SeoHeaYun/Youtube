@@ -9,24 +9,19 @@ import kr.camp.youtube.domain.repository.VideoRepository
 class VideoUseCase (
     private val videoRepository: VideoRepository
 ) {
-    suspend operator fun invoke(chart: String, categoryId: String): Result<VideoEntity> {
+    suspend fun getCategoryPopularVideo(chart: String, categoryId: String): Result<VideoEntity> {
         return runCatching {
-            videoRepository.getVideo(chart,categoryId).toEntity()
+            videoRepository.getCategoryPopularVideo(chart,categoryId).toEntity()
         }
     }
+    suspend fun getMostPopularVideo(chart: String): Result<VideoEntity> {
+        return runCatching {
+            videoRepository.getMostPopularVideo(chart).toEntity()
+        }
+    }
+
 }
 
 
 
 
-
-//class SearchUseCase(
-//    private val searchRepository: SearchRepository
-//) {
-//
-//    suspend operator fun invoke(query: String): Result<SearchEntity> {
-//        return runCatching {
-//            searchRepository.getSearch(query).toEntity()
-//        }
-//    }
-//}

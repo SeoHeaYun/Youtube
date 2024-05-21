@@ -4,6 +4,7 @@ data class SearchEntity(
     val kind: String?,
     val eTag: String?,
     val nextPageToken: String?,
+    val prevPageToken: String?,
     val regionCode: String?,
     val pageInfo: PageInfoEntity?,
     val items: List<ItemEntity>
