@@ -8,9 +8,9 @@ class SearchUseCase(
     private val searchRepository: SearchRepository
 ) {
 
-    suspend operator fun invoke(query: String): Result<SearchEntity> {
+    suspend operator fun invoke(query: String, nextPageToken: String? = null): Result<SearchEntity> {
         return runCatching {
-            searchRepository.getSearch(query).toEntity()
+            searchRepository.getSearch(query, nextPageToken).toEntity()
         }
     }
 }

@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemPopularVideoBinding
 import kr.camp.youtube.view.home.UserItem.HomeItem
 
-
 class HomePopularAdapter(
     private val onItemClick: (HomeItem.PopularItem) -> Unit = {}
 ) : RecyclerView.Adapter<HomePopularAdapter.HomePopularItemViewHolder>() {
@@ -44,6 +43,7 @@ class HomePopularAdapter(
 
         }
     }
+
     @SuppressLint("NotifyDataSetChanged")
     fun update(newHomePopularList: List<HomeItem.PopularItem>) {
         this.homePopularlList.clear()

@@ -9,6 +9,8 @@ data class SearchResponse(
     val eTag: String?,
     @SerializedName("nextPageToken")
     val nextPageToken: String?,
+    @SerializedName("prevPageToken")
+    val prevPageToken: String?,
     @SerializedName("regionCode")
     val regionCode: String?,
     @SerializedName("pageInfo")

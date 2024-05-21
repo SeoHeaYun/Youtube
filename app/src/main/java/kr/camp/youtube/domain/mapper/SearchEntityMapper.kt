@@ -20,6 +20,7 @@ fun SearchResponse.toEntity(): SearchEntity {
         kind = kind,
         eTag = eTag,
         nextPageToken = nextPageToken,
+        prevPageToken = prevPageToken,
         regionCode = regionCode,
         pageInfo = pageInfo?.toEntity(),
         items = items.map(ItemResponse::toEntity),

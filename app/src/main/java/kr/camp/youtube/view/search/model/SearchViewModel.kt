@@ -22,15 +22,27 @@ class SearchViewModel(
     private val _uiState: MutableStateFlow<SearchUiState> = MutableStateFlow(SearchUiState.ResultEmpty)
     val uiState: StateFlow<SearchUiState> get() = _uiState.asStateFlow()
 
-    fun onSearch(query: String) = viewModelScope.launch {
-        setLoading()
-        searchUseCase(query).onSuccess { searchEntity ->
+    fun onSearch(
+        query: String,
+        nextPageToken: String? = null,
+        isLoading: Boolean = true,
+        set: Boolean = false
+    ) = viewModelScope.launch {
+        if (isLoading) {
+            setLoading()
+        }
+        searchUseCase(query, nextPageToken).onSuccess { searchEntity ->
             val items = createSearchListItems(searchEntity)
             _uiState.update {
                 if (items.isEmpty()) {
                     SearchUiState.ResultEmpty
                 } else {
-                    SearchUiState.ResultList(items)
+                    val newNextPageToken = searchEntity.nextPageToken
+                    if (set) {
+                        SearchUiState.ResultSetList(items, newNextPageToken)
+                    } else {
+                        SearchUiState.ResultAddList(items, newNextPageToken)
+                    }
                 }
             }
         }.onFailure { throwable ->
