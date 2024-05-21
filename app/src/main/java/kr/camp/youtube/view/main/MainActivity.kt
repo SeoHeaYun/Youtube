@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.ActivityMainBinding
+import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.myVideo.state.MyVideoFragment
 import kr.camp.youtube.view.home.HomeFragment
 import kr.camp.youtube.view.search.SearchFragment
@@ -68,6 +69,11 @@ class MainActivity : AppCompatActivity() {
     private fun getIconResource(tabIndex: Int, currentPosition: Int): Int {
         return if (tabIndex == currentPosition) blackIcons[tabIndex] else whiteIcons[tabIndex]
     }
+
+    // 좋아요를 눌러 선택된 아이템을 저장하는 리스트
+    var likedItems: ArrayList<LikeItemModel> = ArrayList()
+
+
 }
 
 

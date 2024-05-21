@@ -1,16 +1,16 @@
 package kr.camp.youtube.view.detail
 
-import android.app.Activity
+import android.content.ClipData
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.google.gson.GsonBuilder
-import kr.camp.youtube.data.model.ItemResponse
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
 import kr.camp.youtube.view.home.state.HomeItem
 import kr.camp.youtube.view.search.state.item.SearchItem
+import kr.camp.youtube.view.detail.model.LikeItemModel
+import kr.camp.youtube.view.detail.model.OnLikeActionListner
 
-class VideoDetailActivity : AppCompatActivity() {
+class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
 
     private val getHomeDataList = mutableListOf<HomeItem>()
@@ -28,12 +28,8 @@ class VideoDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val likeList : ArrayList<ItemResponse> // Id
-
         setupView()
 
-        binding.likeButton.setOnClickListener {
-        }
     }
 
     private fun setupView() {
@@ -47,30 +43,33 @@ class VideoDetailActivity : AppCompatActivity() {
         binding.descriptionTextView.setText(videoDescription)
     }
 
-    fun addPrefItem(item: ItemResponse) {
-        val sharedPreferences = getSharedPreferences("shared preferences", Activity.MODE_PRIVATE)
-        val edit = sharedPreferences.edit()
-        val gson = GsonBuilder().create()
-        edit.putString(item.id.toString(), gson.toJson(item))
-//        edit.putString(item.id?.videoId, gson.toJson(item))
-        edit.apply()
+    override fun onLike(item: LikeItemModel) {
+        likedItems.add(item)
+    }
+    override fun onUnlike(item: LikeItemModel){
+        likedItems.remove(item)
     }
 
-    fun deletePrefItem(id: String) {
-        val sharedPreferences = getSharedPreferences("shared preferences", Activity.MODE_PRIVATE)
-        val edit = sharedPreferences.edit()
-        edit.remove(id)
-        edit.apply()
-    }
-    fun getPrefItem(): ArrayList<ItemResponse> {
-        val sharedPreferences = getSharedPreferences("shared preferences", Activity.MODE_PRIVATE)
-        val allEntries: Map<String, *> = sharedPreferences.all
-        val likeList = ArrayList<ItemResponse>()
-        val gson = GsonBuilder().create()
-        for ((key, value) in allEntries) {
-            val item = gson.fromJson(value as String, ItemResponse::class.java)
-            likeList.add(item)
+    // 좋아요를 눌러 선택된 아이템을 저장하는 리스트
+    var likedItems: ArrayList<LikeItemModel> = ArrayList()
+
+    /**
+     * 좋아요가 눌린 아이템을 likedItems 리스트에 추가하는 함수입니다.
+     * @param item 좋아요가 눌린 아이템
+     */
+    fun addLikedItem(item: LikeItemModel) {
+        if(!likedItems.contains(item)) {
+            likedItems.add(item)
         }
-        return likeList
     }
+    /**
+     * 좋아요가 취소된 아이템을 likedItems 리스트에서 제거하는 함수입니다.
+     * @param item 좋아요가 취소된 아이템
+     */
+    fun removeLikedItem(item: LikeItemModel) {
+        likedItems.remove(item)
+    }
+
+
 }
+
