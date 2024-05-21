@@ -30,13 +30,12 @@ class MyVideoAdapter(private var items: MutableList<LikeItemModel>) :
             .into(holder.binding.imageViewThumbnail)
 
         //좋아요 status
-
+        //holder.binding.likeButton.isChecked = item.isLike
 
         //디테일 엑티비티
         holder.binding.root.setOnClickListener {
             val context = holder.binding.root.context
             val intent = Intent(context, VideoDetailActivity::class.java)
-
             context.startActivity(intent)
         }
     }
@@ -53,7 +52,6 @@ class MyVideoAdapter(private var items: MutableList<LikeItemModel>) :
         var constraintLayout = binding.contraintlayout
 
         init {
-
             //아이템 클릭리스너 설정
             constraintLayout.setOnClickListener{
                 val position = adapterPosition

@@ -16,9 +16,6 @@ class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
 
         setupView()
 
-        val items = mutableListOf<ClipData.Item>()
-        val position = 0
-
     }
 
     private fun setupView() {

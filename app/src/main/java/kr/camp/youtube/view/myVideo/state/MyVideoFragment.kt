@@ -2,7 +2,6 @@ package kr.camp.youtube.view.myVideo.state
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,8 +54,8 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
         binding.recylclerView.layoutManager = gridLayoutManager
 
         //메인액티비티에서 좋아요 목록 가져오기
-        val detailActivity = activity as VideoDetailActivity
-        likedItems = detailActivity.likedItems
+        val mainActivity = activity as MainActivity
+        likedItems = mainActivity.likedItems
 
         //좋아요 리스트와 어댑터 연결
         videoAdapter = MyVideoAdapter(likedItems.toMutableList())

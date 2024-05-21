@@ -70,6 +70,8 @@ class MainActivity : AppCompatActivity() {
         return if (tabIndex == currentPosition) blackIcons[tabIndex] else whiteIcons[tabIndex]
     }
 
+    // 좋아요를 눌러 선택된 아이템을 저장하는 리스트
+    var likedItems: ArrayList<LikeItemModel> = ArrayList()
 
 
 }
