@@ -4,5 +4,5 @@ import kr.camp.youtube.data.model.SearchResponse
 
 interface SearchRepository {
 
-    suspend fun getSearch(query: String, netPageToken: String? = null): SearchResponse
+    suspend fun getSearch(query: String, nextPageToken: String? = null): SearchResponse
 }

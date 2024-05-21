@@ -5,35 +5,35 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kr.camp.youtube.databinding.ItemMostpopularVideoBinding
-import kr.camp.youtube.view.home.state.HomeItem
+import kr.camp.youtube.databinding.ItemPopularVideoBinding
+import kr.camp.youtube.view.home.UserItem.HomeItem
 
-class HomeMostPopularAdapter(
-    private val onItemClick: (HomeItem.mostPopularItem) -> Unit = {}
-) : RecyclerView.Adapter<HomeMostPopularAdapter.MostPopularItemViewHolder>() {
+class HomePopularAdapter(
+    private val onItemClick: (HomeItem.PopularItem) -> Unit = {}
+) : RecyclerView.Adapter<HomePopularAdapter.HomePopularItemViewHolder>() {
 
-    private val homePopularlList = mutableListOf<HomeItem.mostPopularItem>()
+    private val homePopularlList = mutableListOf<HomeItem.PopularItem>()
 
-    class MostPopularItemViewHolder(
-        var binding: ItemMostpopularVideoBinding
+    class HomePopularItemViewHolder(
+        var binding: ItemPopularVideoBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val glide = Glide.with(binding.root)
-        fun bind(homePopularItemPosition: HomeItem.mostPopularItem) = with(binding) {
+        fun bind(homePopularItemPosition: HomeItem.PopularItem) = with(binding) {
             glide.load(homePopularItemPosition.thumbnailUrl).into(thumbnailImageView)
             videoTitleTextView.text = homePopularItemPosition.videoTitle
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MostPopularItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomePopularItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemMostpopularVideoBinding.inflate(layoutInflater, parent, false)
-        return MostPopularItemViewHolder(binding)
+        val binding = ItemPopularVideoBinding.inflate(layoutInflater, parent, false)
+        return HomePopularItemViewHolder(binding)
     }
 
     override fun getItemCount(): Int = homePopularlList.size
 
-    override fun onBindViewHolder(holder: MostPopularItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HomePopularItemViewHolder, position: Int) {
         val itemPosition = homePopularlList[position]
         holder.apply {
             bind(itemPosition)
@@ -45,14 +45,10 @@ class HomeMostPopularAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateItem(newHomePopularList: List<HomeItem.mostPopularItem>) {
+    fun update(newHomePopularList: List<HomeItem.PopularItem>) {
         this.homePopularlList.clear()
         this.homePopularlList.addAll(newHomePopularList)
         notifyDataSetChanged()
-    }
-
-    fun clearItems() {
-        updateItem(emptyList())
     }
 }
 
