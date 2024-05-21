@@ -1,25 +1,17 @@
-package kr.camp.youtube.view.home.UserItem
+package kr.camp.youtube.view.home.state
 
 sealed interface HomeItem {
 
     val thumbnailUrl: String
 
-
-
-    // HomeChannelAdapter
-    data class ChannelItem(
-        override val thumbnailUrl: String,
-        val channelName: String
-    ) : HomeItem
-
     // HomeVideoAdapter
-    data class VideoItem(
+    data class categoryPopularItem(
         override val thumbnailUrl: String,
         val videoTitle: String
     ) : HomeItem
 
     // HomePopularAdapter
-    data class PopularItem(
+    data class mostPopularItem(
         override val thumbnailUrl: String,
         val videoTitle: String
     ) : HomeItem

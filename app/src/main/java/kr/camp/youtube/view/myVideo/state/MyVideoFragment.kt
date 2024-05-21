@@ -1,60 +1,61 @@
 package kr.camp.youtube.view.myVideo.state
 
-import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
+import kr.camp.youtube.BuildConfig
+import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentMyVideoBinding
+import kr.camp.youtube.network.YoutubeRetrofitClient
 import kr.camp.youtube.view.myVideo.adapter.MyVideoAdapter
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MyVideoFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MyVideoFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+
+class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
+
     private var _binding: FragmentMyVideoBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var videoAdapter: MyVideoAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMyVideoBinding.inflate(inflater, container, false)
-        return binding.root
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentMyVideoBinding.bind(view)
 
         val gridLayoutManager = GridLayoutManager(requireContext(),2)
         binding.recylclerView.layoutManager = gridLayoutManager
 
-//        val videoList = listOf(
-//            //좋아요 비디오 리스트
-//        )
-//
-//        videoAdapter = MyVideoAdapter(videoList)
-//        binding.recylclerView.adapter = videoAdapter
+        fetchVideos()
+    }
 
+    private fun fetchVideos(){
+        val apiKey = BuildConfig.YOUTUBE_API_KEY
+
+        lifecycleScope.launch{
+            try {
+                val response = YoutubeRetrofitClient.searchDataSource.getSearch(
+                    query = "Android development",
+                    apiKey = apiKey,
+                    pageToken = "",
+                    maxResults = 0,
+                    type = "video",
+                    part = "snippet"
+                )
+                videoAdapter = MyVideoAdapter(response.items)
+                binding.recylclerView.adapter = videoAdapter
+            } catch(e:Exception){
+                Toast.makeText(requireContext(),"영상을 불러오는데 실패하였습니다",Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onDestroyView(){
+        super.onDestroyView()
+        //메모리 누수를 방지하기 위해 뷰가 파괴될 때 바인딩 객체를 null로 설정
+        _binding= null
     }
 
 
-
-    private fun openGallery(){
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.type = "image/*"
-        startActivityForResult(intent, 1)
-    }
 }
