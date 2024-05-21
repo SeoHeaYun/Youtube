@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.ActivityMainBinding
+import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.myVideo.state.MyVideoFragment
 import kr.camp.youtube.view.home.HomeFragment
 import kr.camp.youtube.view.search.SearchFragment
@@ -68,6 +69,9 @@ class MainActivity : AppCompatActivity() {
     private fun getIconResource(tabIndex: Int, currentPosition: Int): Int {
         return if (tabIndex == currentPosition) blackIcons[tabIndex] else whiteIcons[tabIndex]
     }
+
+
+
 }
 
 
