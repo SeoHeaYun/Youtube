@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kr.camp.youtube.data.model.VideoEntity.VideoEntity
 import kr.camp.youtube.domain.exception.NetworkException
 import kr.camp.youtube.domain.exception.QuotaExceededException
 import kr.camp.youtube.domain.exception.TimeoutException
+import kr.camp.youtube.domain.model.VideoEntity.VideoEntity
 import kr.camp.youtube.domain.usecase.VideoUseCase
 import kr.camp.youtube.view.home.state.CategoryPopularAddList
 import kr.camp.youtube.view.home.state.CategoryPopularNetwork
@@ -99,7 +99,8 @@ class VideoViewModel(
         return entity.items.map {
             val snippet = it.snippet
             HomeItem.mostPopularItem(
-                snippet.thumbnails.url,
+                snippet.thumbnails.default.url,
+                snippet.description,
                 snippet.title
             )
         }
@@ -109,7 +110,8 @@ class VideoViewModel(
         return entity.items.map {
             val snippet = it.snippet
             HomeItem.categoryPopularItem(
-                snippet.thumbnails.url,
+                snippet.thumbnails.default.url,
+                snippet.description,
                 snippet.title
             )
         }

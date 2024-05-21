@@ -1,9 +1,9 @@
-package kr.camp.youtube.data.model.VideoResponse
+package kr.camp.youtube.data.model.VideoResponce
 
 
 import com.google.gson.annotations.SerializedName
 
-data class SnippetResponse(
+data class SnippetResponce(
     @SerializedName("categoryId")
     val categoryId: String,
     @SerializedName("channelId")
@@ -12,20 +12,18 @@ data class SnippetResponse(
     val channelTitle: String,
     @SerializedName("defaultAudioLanguage")
     val defaultAudioLanguage: String,
-    @SerializedName("defaultLanguage")
-    val defaultLanguage: String,
     @SerializedName("description")
     val description: String,
     @SerializedName("liveBroadcastContent")
     val liveBroadcastContent: String,
     @SerializedName("localized")
-    val localized: LocalizedResponse,
+    val localized: LocalizedResponce,
     @SerializedName("publishedAt")
     val publishedAt: String,
     @SerializedName("tags")
     val tags: List<String>,
     @SerializedName("thumbnails")
-    val thumbnails: ThumbnailsResponse,
+    val thumbnails: ThumbnailsResponce,
     @SerializedName("title")
     val title: String
 )

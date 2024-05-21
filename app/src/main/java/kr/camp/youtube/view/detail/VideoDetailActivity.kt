@@ -7,9 +7,23 @@ import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
 import kr.camp.youtube.data.model.ItemResponse
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
+import kr.camp.youtube.view.home.state.HomeItem
+import kr.camp.youtube.view.search.state.item.SearchItem
 
 class VideoDetailActivity : AppCompatActivity() {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
+
+    private val getHomeDataList = mutableListOf<HomeItem>()
+    private val getSearchDataList = mutableListOf<SearchItem>()
+
+    fun receiveHomeDataList(item: HomeItem) {
+        getHomeDataList.add(item)
+    }
+
+    fun receiveSearchDataList(item: SearchItem) {
+        getSearchDataList.add(item)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

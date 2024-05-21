@@ -1,19 +1,17 @@
-package kr.camp.youtube.data.model.VideoResponse
+package kr.camp.youtube.data.model.VideoResponce
 
 
 import com.google.gson.annotations.SerializedName
 
-data class VideoResponse(
+data class VideoResponce(
     @SerializedName("etag")
     val etag: String,
     @SerializedName("items")
-    val items: List<ItemResponse>,
+    val items: List<ItemResponce>,
     @SerializedName("kind")
     val kind: String,
     @SerializedName("nextPageToken")
     val nextPageToken: String,
     @SerializedName("pageInfo")
-    val pageInfo: PageInfoResponse,
-    @SerializedName("prevPageToken")
-    val prevPageToken: String
+    val pageInfo: PageInfoResponce
 )

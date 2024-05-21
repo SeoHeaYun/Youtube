@@ -1,14 +1,10 @@
-package kr.camp.youtube.data.model.VideoEntity
-
-
-import com.google.gson.annotations.SerializedName
+package kr.camp.youtube.domain.model.VideoEntity
 
 data class SnippetEntity(
     val categoryId: String,
     val channelId: String,
     val channelTitle: String,
     val defaultAudioLanguage: String,
-    val defaultLanguage: String,
     val description: String,
     val liveBroadcastContent: String,
     val localized: LocalizedEntity,

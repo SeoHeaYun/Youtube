@@ -1,9 +1,9 @@
-package kr.camp.youtube.data.model.VideoResponse
+package kr.camp.youtube.data.model.VideoResponce
 
 
 import com.google.gson.annotations.SerializedName
 
-data class PageInfoResponse(
+data class PageInfoResponce(
     @SerializedName("resultsPerPage")
     val resultsPerPage: Int,
     @SerializedName("totalResults")

@@ -1,7 +1,4 @@
-package kr.camp.youtube.data.model.VideoEntity
-
-
-import com.google.gson.annotations.SerializedName
+package kr.camp.youtube.domain.model.VideoEntity
 
 data class PageInfoEntity(
     val resultsPerPage: Int,
