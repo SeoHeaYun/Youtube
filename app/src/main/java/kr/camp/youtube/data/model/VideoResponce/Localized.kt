@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class LocalizedResponce(
     @SerializedName("description")
-    val description: String,
+    val description: String?,
     @SerializedName("title")
-    val title: String
+    val title: String?
 )

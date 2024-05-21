@@ -9,9 +9,9 @@ data class ThumbnailsResponce(
     @SerializedName("high")
     val high: HighResponce,
     @SerializedName("maxres")
-    val maxres: MaxresResponce,
+    val maxres: MaxresResponce?,
     @SerializedName("medium")
-    val medium: MediumResponce,
+    val medium: MediumResponce?,
     @SerializedName("standard")
-    val standard: StandardResponce
+    val standard: StandardResponce?
 )

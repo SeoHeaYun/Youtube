@@ -29,7 +29,7 @@ fun VideoResponce.toEntity(): VideoEntity {
         items = items.map(ItemResponce::toEntity),
         kind = kind,
         nextPageToken = nextPageToken,
-        pageInfo = pageInfo.toEntity()
+        pageInfo = pageInfo?.toEntity()
     )
 }
 
@@ -69,9 +69,9 @@ fun ThumbnailsResponce.toEntity(): ThumbnailsEntity {
     return ThumbnailsEntity(
         default = default.toEntity(),
         high = high.toEntity(),
-        maxres = maxres.toEntity(),
-        medium = medium.toEntity(),
-        standard = standard.toEntity()
+        maxres = maxres?.toEntity(),
+        medium = medium?.toEntity(),
+        standard = standard?.toEntity()
     )
 }
 

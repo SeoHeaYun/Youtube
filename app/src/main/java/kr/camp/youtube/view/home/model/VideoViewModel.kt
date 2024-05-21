@@ -1,5 +1,6 @@
 package kr.camp.youtube.view.home.model
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,11 +34,9 @@ import kr.camp.youtube.view.home.state.MostPopularVideoUiState
 class VideoViewModel(
     private val videoUseCase: VideoUseCase
 ) : ViewModel() {
-    private val _mostPopularVideoUiState: MutableStateFlow<MostPopularVideoUiState> =
-        MutableStateFlow(MostPopularResultEmpty)
+    private val _mostPopularVideoUiState: MutableStateFlow<MostPopularVideoUiState> = MutableStateFlow(MostPopularResultEmpty)
 
-    private val _categoriesPopularVideoUiState: MutableStateFlow<CategoryPopularVideoUiState> =
-        MutableStateFlow(CategoryPopularResultEmpty)
+    private val _categoriesPopularVideoUiState: MutableStateFlow<CategoryPopularVideoUiState> = MutableStateFlow(CategoryPopularResultEmpty)
 
     val mostPopularVideoUiState: StateFlow<MostPopularVideoUiState> get() = _mostPopularVideoUiState.asStateFlow()
     val categoriesPopularVideoUiState: StateFlow<CategoryPopularVideoUiState> get() = _categoriesPopularVideoUiState.asStateFlow()
@@ -47,6 +46,7 @@ class VideoViewModel(
     ) = viewModelScope.launch {
         videoUseCase.getMostPopularVideo(chart).onSuccess { videoEntitiy ->
             val mostPopularItems = creatMostPopularVideoListItems(videoEntitiy)
+            Log.d("list",mostPopularItems.toString())
             _mostPopularVideoUiState.update {
                 if (mostPopularItems.isEmpty()) {
                     MostPopularResultEmpty
@@ -99,7 +99,7 @@ class VideoViewModel(
         return entity.items.map {
             val snippet = it.snippet
             HomeItem.mostPopularItem(
-                snippet.thumbnails.default.url,
+                snippet.thumbnails.high.url,
                 snippet.description,
                 snippet.title
             )
@@ -110,7 +110,7 @@ class VideoViewModel(
         return entity.items.map {
             val snippet = it.snippet
             HomeItem.categoryPopularItem(
-                snippet.thumbnails.default.url,
+                snippet.thumbnails.high.url,
                 snippet.description,
                 snippet.title
             )

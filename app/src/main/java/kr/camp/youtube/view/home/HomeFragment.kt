@@ -115,10 +115,10 @@ class HomeFragment : Fragment() {
         when (clickCategory) {
             musicCategory -> dataUpdate(clickCategory, "10")
             sportsCategory -> dataUpdate(clickCategory, "17")
-            movieCategory -> dataUpdate(clickCategory, "30")
+            movieCategory -> dataUpdate(clickCategory, "1")
             gateCategory -> dataUpdate(clickCategory, "20")
             newsCategory -> dataUpdate(clickCategory, "25")
-            travelCategory -> dataUpdate(clickCategory, "19")
+            travelCategory -> dataUpdate(clickCategory, "22")
             animalCategory -> dataUpdate(clickCategory, "15")
         }
     }
