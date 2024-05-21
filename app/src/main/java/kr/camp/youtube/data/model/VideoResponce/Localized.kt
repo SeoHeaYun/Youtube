@@ -1,11 +1,11 @@
-package kr.camp.youtube.data.model.VideoResponse
+package kr.camp.youtube.data.model.VideoResponce
 
 
 import com.google.gson.annotations.SerializedName
 
-data class LocalizedResponse(
+data class LocalizedResponce(
     @SerializedName("description")
-    val description: String,
+    val description: String?,
     @SerializedName("title")
-    val title: String
+    val title: String?
 )

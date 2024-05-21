@@ -1,6 +1,6 @@
 package kr.camp.youtube.data.repository
 
-import kr.camp.youtube.data.model.VideoResponse.VideoResponse
+import kr.camp.youtube.data.model.VideoResponce.VideoResponce
 import kr.camp.youtube.data.remote.VideoDataSource
 import kr.camp.youtube.domain.exception.NetworkException
 import kr.camp.youtube.domain.exception.QuotaExceededException
@@ -15,7 +15,7 @@ import java.net.UnknownHostException
 class VideoRepositoryImpl (
     private val videoDataSource: VideoDataSource
 ) : VideoRepository {
-    override suspend fun getCategoryPopularVideo(chart: String, categoryId: String): VideoResponse {
+    override suspend fun getCategoryPopularVideo(chart: String, categoryId: String): VideoResponce {
         return try {
             videoDataSource.getVideo(chart, categoryId)
         } catch (e: HttpException) {
@@ -34,7 +34,7 @@ class VideoRepositoryImpl (
     }
 
 
-    override suspend fun getMostPopularVideo(chart: String): VideoResponse {
+    override suspend fun getMostPopularVideo(chart: String): VideoResponce {
         return try {
             videoDataSource.getVideo(chart,null)
         } catch (e: HttpException) {

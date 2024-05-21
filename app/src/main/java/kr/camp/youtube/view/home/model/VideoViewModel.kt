@@ -1,5 +1,6 @@
 package kr.camp.youtube.view.home.model
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -7,10 +8,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kr.camp.youtube.data.model.VideoEntity.VideoEntity
 import kr.camp.youtube.domain.exception.NetworkException
 import kr.camp.youtube.domain.exception.QuotaExceededException
 import kr.camp.youtube.domain.exception.TimeoutException
+import kr.camp.youtube.domain.model.VideoEntity.VideoEntity
 import kr.camp.youtube.domain.usecase.VideoUseCase
 import kr.camp.youtube.view.home.state.CategoryPopularAddList
 import kr.camp.youtube.view.home.state.CategoryPopularNetwork
@@ -33,11 +34,9 @@ import kr.camp.youtube.view.home.state.MostPopularVideoUiState
 class VideoViewModel(
     private val videoUseCase: VideoUseCase
 ) : ViewModel() {
-    private val _mostPopularVideoUiState: MutableStateFlow<MostPopularVideoUiState> =
-        MutableStateFlow(MostPopularResultEmpty)
+    private val _mostPopularVideoUiState: MutableStateFlow<MostPopularVideoUiState> = MutableStateFlow(MostPopularResultEmpty)
 
-    private val _categoriesPopularVideoUiState: MutableStateFlow<CategoryPopularVideoUiState> =
-        MutableStateFlow(CategoryPopularResultEmpty)
+    private val _categoriesPopularVideoUiState: MutableStateFlow<CategoryPopularVideoUiState> = MutableStateFlow(CategoryPopularResultEmpty)
 
     val mostPopularVideoUiState: StateFlow<MostPopularVideoUiState> get() = _mostPopularVideoUiState.asStateFlow()
     val categoriesPopularVideoUiState: StateFlow<CategoryPopularVideoUiState> get() = _categoriesPopularVideoUiState.asStateFlow()
@@ -47,6 +46,7 @@ class VideoViewModel(
     ) = viewModelScope.launch {
         videoUseCase.getMostPopularVideo(chart).onSuccess { videoEntitiy ->
             val mostPopularItems = creatMostPopularVideoListItems(videoEntitiy)
+            Log.d("list",mostPopularItems.toString())
             _mostPopularVideoUiState.update {
                 if (mostPopularItems.isEmpty()) {
                     MostPopularResultEmpty
@@ -99,7 +99,8 @@ class VideoViewModel(
         return entity.items.map {
             val snippet = it.snippet
             HomeItem.mostPopularItem(
-                snippet.thumbnails.url,
+                snippet.thumbnails.high.url,
+                snippet.description,
                 snippet.title
             )
         }
@@ -109,7 +110,8 @@ class VideoViewModel(
         return entity.items.map {
             val snippet = it.snippet
             HomeItem.categoryPopularItem(
-                snippet.thumbnails.url,
+                snippet.thumbnails.high.url,
+                snippet.description,
                 snippet.title
             )
         }
