@@ -2,15 +2,11 @@ package kr.camp.youtube.view.detail
 
 import android.content.ClipData
 import android.os.Bundle
-import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
 import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.detail.model.OnLikeActionListner
-import okhttp3.internal.notify
 
 class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
@@ -19,11 +15,24 @@ class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        setupView()
+
         binding.likeButton.setOnClickListener() {
             val items = mutableListOf<ClipData.Item>()
             val position = 0
 
         }
+    }
+
+    private fun setupView() {
+        val Id = intent.getStringExtra("ID")
+        val videoTitle = intent.getStringExtra("VIDEO_TITLE")
+        val videoDescription = intent.getStringExtra("VIDEO_DESCRIPTION")
+        Glide.with(this)
+            .load("https://www.youtube.com/embed/${Id}")
+            .into(binding.videoImageView)
+        binding.titleTextView.setText(videoTitle)
+        binding.descriptionTextView.setText(videoDescription)
     }
 
     override fun onLike(item: LikeItemModel) {
