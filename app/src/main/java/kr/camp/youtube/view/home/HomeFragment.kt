@@ -61,8 +61,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun videoAdapterOnItemClick(item: HomeItem) {
-        val detailActivity = activity as? VideoDetailActivity
-        detailActivity?.receiveHomeDataList(item)
+
     }
 
 

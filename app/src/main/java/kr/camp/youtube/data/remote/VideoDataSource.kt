@@ -10,7 +10,7 @@ interface VideoDataSource {
     suspend fun getVideo(
         @Query("chart") chart: String = "mostPopular",
         @Query("videoCategoryId") videoCategoryId: String? ,
-        @Query("maxResults") maxResults: Int = 20,
+        @Query("maxResults") maxResults: Int = 30,
         @Query("part") part: String = "snippet",
         @Query("key") apiKey: String = BuildConfig.YOUTUBE_API_KEY
     ): VideoResponce

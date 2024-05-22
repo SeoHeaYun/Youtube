@@ -46,7 +46,6 @@ class VideoViewModel(
     ) = viewModelScope.launch {
         videoUseCase.getMostPopularVideo(chart).onSuccess { videoEntitiy ->
             val mostPopularItems = creatMostPopularVideoListItems(videoEntitiy)
-            Log.d("list",mostPopularItems.toString())
             _mostPopularVideoUiState.update {
                 if (mostPopularItems.isEmpty()) {
                     MostPopularResultEmpty
