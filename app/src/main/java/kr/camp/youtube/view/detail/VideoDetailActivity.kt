@@ -1,13 +1,10 @@
 package kr.camp.youtube.view.detail
 
-import android.content.ClipData
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import kr.camp.youtube.R
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
-import kr.camp.youtube.view.home.state.HomeItem
-import kr.camp.youtube.view.search.state.item.SearchItem
 import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.detail.model.OnLikeActionListner
 
@@ -18,8 +15,15 @@ class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        overridePendingTransition(R.anim.from_down_enter, R.anim.none)
         setupView()
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        overridePendingTransition(R.anim.none, R.anim.to_down_exit)
     }
 
     private fun setupView() {
