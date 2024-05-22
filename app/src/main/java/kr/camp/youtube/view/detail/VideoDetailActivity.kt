@@ -1,28 +1,39 @@
 package kr.camp.youtube.view.detail
 
+import android.app.Activity
+import android.content.ClipData
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
+import kr.camp.youtube.view.detail.model.DummyDataManager
+import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.Intent.IntentKey
 import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.detail.model.OnLikeActionListner
 import kr.camp.youtube.view.home.state.HomeItem
 
-class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
+
+class VideoDetailActivity : AppCompatActivity() {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
+    private lateinit var item: LikeItemModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        item = intent.getSerializableExtra("item") as LikeItemModel
         setupView()
 
+        setupView()
     }
 
 
 
     private fun setupView() {
+
         val getCategoryItem: ArrayList<HomeItem.CategoryPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
         val getMostPopularItem: ArrayList<HomeItem.MostPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
 
@@ -30,18 +41,47 @@ class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
         val videoTitle = intent.getStringExtra("VIDEO_TITLE")
         val videoDescription = intent.getStringExtra("VIDEO_DESCRIPTION")
         Glide.with(this)
-            .load("https://www.youtube.com/embed/${Id}")
+            .load(item.url)
             .into(binding.videoImageView)
-        binding.titleTextView.setText(videoTitle)
-        binding.descriptionTextView.setText(videoDescription)
+
+        binding.titleTextView.text = item.title
+        binding.descriptionTextView.text = item.desc
+
+        binding.likeButton.text = if (item.isLike) "UnLike" else "Like"
+
+        binding.likeButton.setOnClickListener{
+            item.changeLike()
+            binding.likeButton.text = if (item.isLike) "UnLike" else "Like"
+            updateDummyData()
+        }
+
+        binding.buttonBack.setOnClickListener{
+            val resultIntent = Intent().apply {
+                putExtra("item", item)
+            }
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
     }
 
-    override fun onLike(item: LikeItemModel) {
-        likedItems.add(item)
+    private fun updateDummyData(){
+        val dummyData = DummyDataManager.getDummyData().toMutableList()
+        val index = dummyData.indexOfFirst { it.title == item.title }
+        if (index != -1) {
+            dummyData[index] = item
+            DummyDataManager.updateDummyData(dummyData)
+        }
     }
-    override fun onUnlike(item: LikeItemModel){
-        likedItems.remove(item)
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val resultIntent = Intent().apply {
+            putExtra("item", item)
+        }
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
     }
+
 
     // 좋아요를 눌러 선택된 아이템을 저장하는 리스트
     var likedItems: ArrayList<LikeItemModel> = ArrayList()
