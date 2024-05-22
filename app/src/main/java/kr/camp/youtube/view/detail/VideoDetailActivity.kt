@@ -1,7 +1,6 @@
 package kr.camp.youtube.view.detail
 
 import android.app.Activity
-import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -12,10 +11,6 @@ import kr.camp.youtube.extension.toSpanned
 import kr.camp.youtube.view.intent.IntentKey
 import kr.camp.youtube.view.detail.model.DummyDataManager
 import kr.camp.youtube.view.detail.model.LikeItemModel
-import kr.camp.youtube.view.Intent.IntentKey
-import kr.camp.youtube.view.detail.model.LikeItemModel
-import kr.camp.youtube.view.detail.model.OnLikeActionListner
-import kr.camp.youtube.view.home.state.HomeItem
 import kr.camp.youtube.view.intent.item.DetailItem
 
 
@@ -28,18 +23,30 @@ class VideoDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         overridePendingTransition(R.anim.from_down_enter, R.anim.none)
-        item = intent.getSerializableExtra("item") as LikeItemModel
         setupView()
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.none, R.anim.to_down_exit)
+        val resultIntent = Intent().apply {
+            putExtra(IntentKey.DETAIL_ITEM, item)
+        }
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
     }
 
     private fun setupView() = with(binding) {
         val detailItem = intent.getParcelableExtra(IntentKey.DETAIL_ITEM) as? DetailItem
             ?: throw NullPointerException()
+
+        item = LikeItemModel(
+            detailItem.videoTitle,
+            detailItem.channelName,
+            detailItem.thumbnailUrl,
+            detailItem.videoDescription,
+            if (detailItem is LikeItemModel) detailItem.isLike else false
+        )
 
         Glide.with(this@VideoDetailActivity)
             .load(detailItem.thumbnailUrl)
@@ -57,7 +64,7 @@ class VideoDetailActivity : AppCompatActivity() {
 
         buttonBack.setOnClickListener{
             val resultIntent = Intent().apply {
-                putExtra("item", item)
+                putExtra(IntentKey.DETAIL_ITEM, item)
             }
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
@@ -66,20 +73,11 @@ class VideoDetailActivity : AppCompatActivity() {
 
     private fun updateDummyData(){
         val dummyData = DummyDataManager.getDummyData().toMutableList()
-        val index = dummyData.indexOfFirst { it.title == item.title }
+        val index = dummyData.indexOfFirst { it.videoTitle == item.videoTitle }
         if (index != -1) {
             dummyData[index] = item
             DummyDataManager.updateDummyData(dummyData)
         }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val resultIntent = Intent().apply {
-            putExtra("item", item)
-        }
-        setResult(Activity.RESULT_OK, resultIntent)
-        finish()
     }
 
 

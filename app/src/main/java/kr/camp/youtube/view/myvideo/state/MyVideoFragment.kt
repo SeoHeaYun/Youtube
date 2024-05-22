@@ -1,4 +1,4 @@
-package kr.camp.youtube.view.myVideo.state
+package kr.camp.youtube.view.myvideo.state
 
 import android.app.Activity
 import android.content.Context
@@ -12,10 +12,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentMyVideoBinding
 import kr.camp.youtube.view.detail.model.DummyDataManager.getDummyData
-import kr.camp.youtube.view.detail.model.DummyDataManager.updateDummyData
-import kr.camp.youtube.network.YoutubeRetrofitClient
 import kr.camp.youtube.view.detail.model.LikeItemModel
-import kr.camp.youtube.view.myVideo.adapter.MyVideoAdapter
+import kr.camp.youtube.view.intent.IntentKey
+import kr.camp.youtube.view.myvideo.adapter.MyVideoAdapter
 
 
 class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
@@ -69,11 +68,11 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == VIDEO_DETAIL_REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            val updatedItem = data?.getSerializableExtra("item") as? LikeItemModel
-            updatedItem?.let{
-                val index = videoAdapter.items.indexOfFirst { it.title == it.title }
+            val updatedItem = data?.getParcelableExtra(IntentKey.DETAIL_ITEM) as? LikeItemModel
+            updatedItem?.let { likeItemModel ->
+                val index = videoAdapter.items.indexOfFirst { likeItemModel.videoTitle == it.videoTitle }
                 if (index != -1) {
-                    videoAdapter.items[index] = it
+                    videoAdapter.items[index] = likeItemModel
                     videoAdapter.updateItems(videoAdapter.items)
                 }
             }

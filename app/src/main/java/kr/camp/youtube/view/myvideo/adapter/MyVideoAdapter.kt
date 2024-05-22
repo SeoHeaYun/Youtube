@@ -1,16 +1,16 @@
-package kr.camp.youtube.view.myVideo.adapter
+package kr.camp.youtube.view.myvideo.adapter
 
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemMyVideoBinding
 import kr.camp.youtube.view.detail.VideoDetailActivity
 import kr.camp.youtube.view.detail.model.LikeItemModel
-import kr.camp.youtube.view.myVideo.state.MyVideoFragment
+import kr.camp.youtube.view.intent.IntentKey
+import kr.camp.youtube.view.myvideo.state.MyVideoFragment
 
 class MyVideoAdapter(var items: MutableList<LikeItemModel>) :
     RecyclerView.Adapter<MyVideoAdapter.VideoViewHolder>() {
@@ -26,12 +26,12 @@ class MyVideoAdapter(var items: MutableList<LikeItemModel>) :
         val item = likedItems[position]
 
         //텍스트뷰 로딩
-        holder.textView_title.text = item.title
-        holder.textView_channelTitle.text = item.channelTitle
+        holder.textView_title.text = item.videoTitle
+        holder.textView_channelTitle.text = item.channelName
 
         //썸네일 이미지 로딩
         Glide.with(holder.imageView_thumbnail.context)
-            .load(item.url)
+            .load(item.thumbnailUrl)
             .into(holder.binding.imageViewThumbnail)
 
 
@@ -39,7 +39,7 @@ class MyVideoAdapter(var items: MutableList<LikeItemModel>) :
         holder.binding.root.setOnClickListener {
             val context = holder.binding.root.context
             val intent = Intent(context, VideoDetailActivity::class.java)
-            intent.putExtra("item", item)
+            intent.putExtra(IntentKey.DETAIL_ITEM, item)
             (context as Activity).startActivityForResult(intent, MyVideoFragment.VIDEO_DETAIL_REQUEST_CODE)
         }
 
