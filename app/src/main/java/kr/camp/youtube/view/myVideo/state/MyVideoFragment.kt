@@ -1,6 +1,8 @@
 package kr.camp.youtube.view.myVideo.state
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +31,11 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
 
     //컨텍스트
     private lateinit var mContext: Context
+
+    //리퀘스트 코드
+    companion object {
+        const val VIDEO_DETAIL_REQUEST_CODE = 1
+    }
 
     // 사용자의 좋아요를 받은 항목을 저장하는 리스트
     private var likedItems: List<LikeItemModel> = listOf()
@@ -62,6 +69,20 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
         binding.RecyclerView.adapter = videoAdapter
 
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == VIDEO_DETAIL_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            val updatedItem = data?.getSerializableExtra("item") as? LikeItemModel
+            updatedItem?.let{
+                val index = videoAdapter.items.indexOfFirst { it.title == it.title }
+                if (index != -1) {
+                    videoAdapter.items[index] = it
+                    videoAdapter.updateItems(videoAdapter.items)
+                }
+            }
+        }
     }
 
     override fun onDestroyView(){

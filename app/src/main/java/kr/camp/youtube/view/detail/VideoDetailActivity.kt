@@ -1,6 +1,8 @@
 package kr.camp.youtube.view.detail
 
+import android.app.Activity
 import android.content.ClipData
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -10,21 +12,18 @@ import kr.camp.youtube.view.detail.model.LikeItemModel
 
 class VideoDetailActivity : AppCompatActivity() {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
+    private lateinit var item: LikeItemModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        item = intent.getSerializableExtra("item") as LikeItemModel
+
         setupView()
-
-        binding.buttonBack.setOnClickListener{
-            onBackPressed()
-        }
-
     }
 
     private fun setupView() {
-        val item = intent.getSerializableExtra("item") as LikeItemModel
-
         Glide.with(this)
             .load(item.url)
             .into(binding.videoImageView)
@@ -32,8 +31,30 @@ class VideoDetailActivity : AppCompatActivity() {
         binding.titleTextView.text = item.title
         binding.descriptionTextView.text = item.desc
 
+        binding.likeButton.text = if (item.isLike) "UnLike" else "Like"
+
+        binding.likeButton.setOnClickListener{
+            item.isLike = !item.isLike
+            binding.likeButton.text = if (item.isLike) "UnLike" else "Like"
+        }
+
+        binding.buttonBack.setOnClickListener{
+            val resultIntent = Intent().apply {
+                putExtra("item", item)
+            }
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val resultIntent = Intent().apply {
+            putExtra("item", item)
+        }
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
+    }
 
 
     // 좋아요를 눌러 선택된 아이템을 저장하는 리스트

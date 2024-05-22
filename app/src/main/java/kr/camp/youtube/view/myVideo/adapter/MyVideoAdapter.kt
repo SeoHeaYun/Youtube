@@ -1,5 +1,6 @@
 package kr.camp.youtube.view.myVideo.adapter
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,8 +10,9 @@ import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemMyVideoBinding
 import kr.camp.youtube.view.detail.VideoDetailActivity
 import kr.camp.youtube.view.detail.model.LikeItemModel
+import kr.camp.youtube.view.myVideo.state.MyVideoFragment
 
-class MyVideoAdapter(private var items: MutableList<LikeItemModel>) :
+class MyVideoAdapter(var items: MutableList<LikeItemModel>) :
     RecyclerView.Adapter<MyVideoAdapter.VideoViewHolder>() {
 
     private var likedItems: List<LikeItemModel> = items.filter { it.isLike }
@@ -38,7 +40,7 @@ class MyVideoAdapter(private var items: MutableList<LikeItemModel>) :
             val context = holder.binding.root.context
             val intent = Intent(context, VideoDetailActivity::class.java)
             intent.putExtra("item", item)
-            context.startActivity(intent)
+            (context as Activity).startActivityForResult(intent, MyVideoFragment.VIDEO_DETAIL_REQUEST_CODE)
         }
 
     }
