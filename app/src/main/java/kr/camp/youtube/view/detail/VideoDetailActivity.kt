@@ -16,13 +16,16 @@ class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        val getCategoryItem: ArrayList<HomeItem.CategoryPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
-        val getMostPopularItem: ArrayList<HomeItem.MostPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
         setupView()
 
     }
 
+
+
     private fun setupView() {
+        val getCategoryItem: ArrayList<HomeItem.CategoryPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
+        val getMostPopularItem: ArrayList<HomeItem.MostPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
+
         val Id = intent.getStringExtra("ID")
         val videoTitle = intent.getStringExtra("VIDEO_TITLE")
         val videoDescription = intent.getStringExtra("VIDEO_DESCRIPTION")
