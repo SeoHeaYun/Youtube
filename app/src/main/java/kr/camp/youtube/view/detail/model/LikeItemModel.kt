@@ -13,10 +13,10 @@ import java.io.Serializable
 
 
 data class LikeItemModel (
-    var title: String,
-    var channelTitle: String,
-    var url: String,
-    var desc: String,
+    var title: String?,
+    var channelTitle: String?,
+    var url: String?,
+    var desc: String?,
     var isLike: Boolean = false
 ): Serializable {
     fun changeLike() {

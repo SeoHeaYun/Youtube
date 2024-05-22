@@ -1,7 +1,6 @@
 package kr.camp.youtube.view.detail
 
 import android.app.Activity
-import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -11,8 +10,6 @@ import kr.camp.youtube.databinding.ActivityVideoDetailBinding
 import kr.camp.youtube.view.detail.model.DummyDataManager
 import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.Intent.IntentKey
-import kr.camp.youtube.view.detail.model.LikeItemModel
-import kr.camp.youtube.view.detail.model.OnLikeActionListner
 import kr.camp.youtube.view.home.state.HomeItem
 
 
@@ -27,13 +24,10 @@ class VideoDetailActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.from_down_enter, R.anim.none)
         item = intent.getSerializableExtra("item") as LikeItemModel
         setupView()
-
-        setupView()
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-
         overridePendingTransition(R.anim.none, R.anim.to_down_exit)
     }
 
@@ -79,14 +73,7 @@ class VideoDetailActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val resultIntent = Intent().apply {
-            putExtra("item", item)
-        }
-        setResult(Activity.RESULT_OK, resultIntent)
-        finish()
-    }
+
 
 
     // 좋아요를 눌러 선택된 아이템을 저장하는 리스트
