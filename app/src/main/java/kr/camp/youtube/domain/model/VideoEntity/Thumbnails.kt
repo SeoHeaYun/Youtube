@@ -1,10 +1,9 @@
-package kr.camp.youtube.data.model.VideoEntity
-
-
-import com.google.gson.annotations.SerializedName
+package kr.camp.youtube.domain.model.VideoEntity
 
 data class ThumbnailsEntity(
-    val height: Int,
-    val url: String,
-    val width: Int
+    val default: DefaultEntity,
+    val high: HighEntity,
+    val maxres: MaxresEntity?,
+    val medium: MediumEntity?,
+    val standard: StandardEntity?
 )

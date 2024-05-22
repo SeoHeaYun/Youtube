@@ -31,7 +31,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoryPopularRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="162dp"
         android:layout_marginTop="15dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
@@ -67,7 +67,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/entireCategoryTextView"
-                app:layout_constraintTop_toBottomOf="@+id/searchBarEditText" />
+                 />
 
             <TextView
                 android:id="@+id/sportTextView"
@@ -82,7 +82,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/musicTextView"
-                app:layout_constraintTop_toBottomOf="@+id/searchBarEditText" />
+                 />
 
             <TextView
                 android:id="@+id/movieTextView"
@@ -97,7 +97,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/sportTextView"
-                app:layout_constraintTop_toBottomOf="@+id/searchBarEditText" />
+                />
 
             <TextView
                 android:id="@+id/gameTextView"
@@ -142,7 +142,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/sportTextView"
-                app:layout_constraintTop_toBottomOf="@+id/searchBarEditText" />
+                 />
 
             <TextView
                 android:id="@+id/animalTextView"
@@ -179,8 +179,8 @@
         android:id="@+id/mostPopularRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="15dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,6 +1,7 @@
 package kr.camp.youtube.view.home.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,17 +11,17 @@ import kr.camp.youtube.view.home.state.HomeItem
 import kr.camp.youtube.view.search.state.item.SearchItem
 
 class HomeCategoryPopularAdapter(
-    private val onItemClick: (HomeItem.categoryPopularItem) -> Unit = {}
+    private val onItemClick: (HomeItem.CategoryPopularItem) -> Unit = {}
 ) : RecyclerView.Adapter<HomeCategoryPopularAdapter.CategoryPopularItemViewHolder>() {
 
-    private val homeVideolList = mutableListOf<HomeItem.categoryPopularItem>()
+    private val homeVideolList = mutableListOf<HomeItem.CategoryPopularItem>()
 
     class CategoryPopularItemViewHolder(
         var binding: ItemCategorypopularVideoBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val glide = Glide.with(binding.root)
-        fun bind(homeVideoItemPosition: HomeItem.categoryPopularItem) = with(binding) {
+        fun bind(homeVideoItemPosition: HomeItem.CategoryPopularItem) = with(binding) {
             glide.load(homeVideoItemPosition.thumbnailUrl).into(thumbnailImageView)
             videoNameTextView.text = homeVideoItemPosition.videoTitle
         }
@@ -46,7 +47,7 @@ class HomeCategoryPopularAdapter(
         }
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun updateItem(newHomeVideoList: List<HomeItem.categoryPopularItem>) {
+    fun updateItem(newHomeVideoList: List<HomeItem.CategoryPopularItem>) {
         this.homeVideolList.clear()
         this.homeVideolList.addAll(newHomeVideoList)
         notifyDataSetChanged()

@@ -4,11 +4,16 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
 import kr.camp.youtube.view.detail.model.DummyDataManager
 import kr.camp.youtube.view.detail.model.LikeItemModel
+import kr.camp.youtube.view.Intent.IntentKey
+import kr.camp.youtube.view.detail.model.LikeItemModel
+import kr.camp.youtube.view.detail.model.OnLikeActionListner
+import kr.camp.youtube.view.home.state.HomeItem
 
 
 class VideoDetailActivity : AppCompatActivity() {
@@ -20,11 +25,21 @@ class VideoDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         item = intent.getSerializableExtra("item") as LikeItemModel
+        setupView()
 
         setupView()
     }
 
+
+
     private fun setupView() {
+
+        val getCategoryItem: ArrayList<HomeItem.CategoryPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
+        val getMostPopularItem: ArrayList<HomeItem.MostPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
+
+        val Id = intent.getStringExtra("ID")
+        val videoTitle = intent.getStringExtra("VIDEO_TITLE")
+        val videoDescription = intent.getStringExtra("VIDEO_DESCRIPTION")
         Glide.with(this)
             .load(item.url)
             .into(binding.videoImageView)
@@ -90,4 +105,6 @@ class VideoDetailActivity : AppCompatActivity() {
 
 
 }
+
+
 

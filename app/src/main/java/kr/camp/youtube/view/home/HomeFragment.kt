@@ -1,5 +1,6 @@
 package kr.camp.youtube.view.home
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +18,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentHomeBinding
+import kr.camp.youtube.view.Intent.IntentKey
+import kr.camp.youtube.view.detail.VideoDetailActivity
 import kr.camp.youtube.view.home.state.HomeItem
 import kr.camp.youtube.view.home.adapter.HomeMostPopularAdapter
 import kr.camp.youtube.view.home.adapter.HomeCategoryPopularAdapter
@@ -34,7 +37,7 @@ class HomeFragment : Fragment() {
 
     private val videoViewModel: VideoViewModel by viewModels { VideoViewModelFactory() }
 
-    private lateinit var clickButton : List<TextView>
+    private lateinit var clickButton: List<TextView>
 
     private val musicCategory by lazy { binding.musicTextView }
     private val sportsCategory by lazy { binding.sportTextView }
@@ -48,19 +51,31 @@ class HomeFragment : Fragment() {
 
     private val homeCategoryPopularAdapter: HomeCategoryPopularAdapter by lazy {
         HomeCategoryPopularAdapter(
-            onItemClick = { item -> videoAdapterOnItemClick(item)}
+            onItemClick = { item -> categoryPopularOnItemClick(item) }
         )
     }
 
     private val homeMostPopularAdapter: HomeMostPopularAdapter by lazy {
         HomeMostPopularAdapter(
-            onItemClick = { item -> videoAdapterOnItemClick(item)}
+            onItemClick = { item -> mostPopularOnItemClick(item) }
         )
     }
 
-    private fun videoAdapterOnItemClick(item: HomeItem){
-        TODO("Intent")
-        }
+
+    private fun categoryPopularOnItemClick(item: HomeItem.CategoryPopularItem) {
+        val intent = Intent(activity, VideoDetailActivity::class.java)
+        val categoryPopularItem = arrayListOf<HomeItem.CategoryPopularItem>(item)
+        intent.putParcelableArrayListExtra(IntentKey.YUKTUBE, categoryPopularItem)
+        startActivity(intent)
+    }
+
+
+    private fun mostPopularOnItemClick(item: HomeItem.MostPopularItem) {
+        val intent = Intent(activity, VideoDetailActivity::class.java)
+        val mostPopularItem = arrayListOf<HomeItem.MostPopularItem>(item)
+        intent.putParcelableArrayListExtra(IntentKey.YUKTUBE, mostPopularItem)
+        startActivity(intent)
+    }
 
 
     override fun onCreateView(
@@ -80,45 +95,47 @@ class HomeFragment : Fragment() {
 
     private fun registerRecyclerView() {
 
+        videoViewModel.getMostPopularVideo("mostPopular")
+        dataUpdate(musicCategory, "10")
+
         binding.categoryPopularRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = homeCategoryPopularAdapter
         }
 
         binding.mostPopularRecyclerView.apply {
-            layoutManager = GridLayoutManager(context,2)
+            layoutManager = GridLayoutManager(context, 2)
             adapter = homeMostPopularAdapter
         }
 
-        videoViewModel.getMostPopularVideo("mostPopular")
-        videoViewModel.getCategoriesPopularVideo("mostPopular","10")
+        clickButton = listOf(
+            musicCategory,
+            sportsCategory,
+            movieCategory,
+            gateCategory,
+            newsCategory,
+            travelCategory,
+            animalCategory
+        )
 
-
-        clickButton = listOf(musicCategory,sportsCategory,movieCategory,gateCategory,newsCategory,travelCategory,animalCategory)
-
-        clickButton.forEach{ button ->
-            button.setOnClickListener{ButtonClickEvent(button)}
+        clickButton.forEach { button ->
+            button.setOnClickListener { ButtonClickEvent(button) }
         }
-
-
-        videoViewModel.getMostPopularVideo("mostPopular")
-
-        videoViewModel.getCategoriesPopularVideo("mostPopular","10")
-        dataUpdate(musicCategory,"10")
     }
+
     private fun ButtonClickEvent(clickCategory: TextView) {
-        when(clickCategory) {
-            musicCategory -> dataUpdate(clickCategory,"10")
-            sportsCategory -> dataUpdate(clickCategory,"17")
-            movieCategory -> dataUpdate(clickCategory,"30")
-            gateCategory -> dataUpdate(clickCategory,"20")
+        when (clickCategory) {
+            musicCategory -> dataUpdate(clickCategory, "10")
+            sportsCategory -> dataUpdate(clickCategory, "17")
+            movieCategory -> dataUpdate(clickCategory, "1")
+            gateCategory -> dataUpdate(clickCategory, "20")
             newsCategory -> dataUpdate(clickCategory, "25")
-            travelCategory -> dataUpdate(clickCategory,"19")
+            travelCategory -> dataUpdate(clickCategory, "22")
             animalCategory -> dataUpdate(clickCategory, "15")
         }
     }
 
-    private fun dataUpdate(clickButton: TextView, categoryId: String){
+    private fun dataUpdate(clickButton: TextView, categoryId: String) {
         currentCategory?.apply {
             setBackgroundResource(R.drawable.home_default_category_background)
             setTextColor(Color.BLACK)
@@ -128,26 +145,33 @@ class HomeFragment : Fragment() {
             setTextColor(Color.WHITE)
         }
         currentCategory = clickButton
-        videoViewModel.getCategoriesPopularVideo("mostPopular",categoryId)
+        videoViewModel.getCategoriesPopularVideo("mostPopular", categoryId)
     }
 
 
     private fun registerViewModelEvent() = binding.apply {
         viewLifecycleOwner.lifecycleScope.launch {
-            combine(videoViewModel.categoriesPopularVideoUiState.flowWithLifecycle(lifecycle),
-                    videoViewModel.mostPopularVideoUiState.flowWithLifecycle(lifecycle)
-            ) {categoriesPopularVideoUiState,mostPopularVideoUiState ->
-                Pair(categoriesPopularVideoUiState,mostPopularVideoUiState)
-            }.collectLatest { (categoriesPopularVideoUiState,mostPopularVideoUiState) ->
+            combine(
+                videoViewModel.categoriesPopularVideoUiState.flowWithLifecycle(lifecycle),
+                videoViewModel.mostPopularVideoUiState.flowWithLifecycle(lifecycle)
+            ) { categoriesPopularVideoUiState, mostPopularVideoUiState ->
+                Pair(categoriesPopularVideoUiState, mostPopularVideoUiState)
+            }.collectLatest { (categoriesPopularVideoUiState, mostPopularVideoUiState) ->
 
-                when(categoriesPopularVideoUiState) {
+                when (categoriesPopularVideoUiState) {
                     is CategoryPopularResultEmpty -> homeCategoryPopularAdapter.clearItems()
-                    is CategoryPopularAddList -> homeCategoryPopularAdapter.updateItem(categoriesPopularVideoUiState.categoryPopularItems)
+                    is CategoryPopularAddList -> homeCategoryPopularAdapter.updateItem(
+                        categoriesPopularVideoUiState.categoryPopularItems
+                    )
+
                     else -> {}
                 }
-                when(mostPopularVideoUiState) {
+                when (mostPopularVideoUiState) {
                     is MostPopularResultEmpty -> homeMostPopularAdapter.clearItems()
-                    is MostPopularVideoAddList -> homeMostPopularAdapter.updateItem(mostPopularVideoUiState.mostPopularItems)
+                    is MostPopularVideoAddList -> homeMostPopularAdapter.updateItem(
+                        mostPopularVideoUiState.mostPopularItems
+                    )
+
                     else -> {}
                 }
 
@@ -161,5 +185,4 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }
