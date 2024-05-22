@@ -1,98 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contraintlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.myVideo.state.MyVideoFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/imageView_channelThumbnail"
+        android:layout_width="415dp"
+        android:layout_height="221dp"
+        android:src="@drawable/channel_thumbnail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_channel_thumbnail"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/channel_thumbnail" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageView_profile"
+        android:layout_width="137dp"
+        android:layout_height="157dp"
+        android:layout_marginTop="128dp"
+        android:src="@drawable/profile_image"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_channelThumbnail"
+        app:layout_constraintStart_toStartOf="@+id/imageView_channelThumbnail"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:id="@+id/v_thumbnail_center"
-            android:layout_width="1dp"
-            android:layout_height="1dp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_channel_thumbnail"
-            app:layout_constraintEnd_toEndOf="@id/iv_channel_thumbnail"
-            app:layout_constraintStart_toStartOf="@id/iv_channel_thumbnail"
-            app:layout_constraintTop_toBottomOf="@id/iv_channel_thumbnail" />
+    <TextView
+        android:id="@+id/textView_channelTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="육튜브 채널"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_profile"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="@+id/imageView_profile"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_profile" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_thumbnail"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="@id/v_thumbnail_center"
-            app:layout_constraintEnd_toEndOf="@id/v_thumbnail_center"
-            app:layout_constraintStart_toStartOf="@id/v_thumbnail_center"
-            app:layout_constraintTop_toTopOf="@id/v_thumbnail_center"
-            tools:clipToOutline="true"
-            tools:src="@drawable/profile_image" />
+    <TextView
+        android:id="@+id/textView_channelDescribe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="TextView_channelDescribe"
+        app:layout_constraintEnd_toEndOf="@+id/textView_channelTitle"
+        app:layout_constraintStart_toStartOf="@+id/textView_channelTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textView_channelTitle" />
 
-        <TextView
-            android:id="@+id/tv_channel_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:maxEms="12"
-            android:maxLines="1"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/v_thumbnail_center"
-            app:layout_constraintStart_toStartOf="@id/v_thumbnail_center"
-            app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"
-            tools:text="육튜브 채널" />
+    <TextView
+        android:id="@+id/textView_MyFavoriteVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="My Favorite Video"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_channelDescribe" />
 
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="329dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="12dp"
-            android:maxLines="5"
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="@+id/tv_channel_name"
-            app:layout_constraintStart_toStartOf="@+id/tv_channel_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_channel_name"
-            tools:text=" Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in " />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerView"
+        android:layout_width="363dp"
+        android:layout_height="421dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_MyFavoriteVideo"
+        tools:listitem="@layout/item_my_video" />
 
-        <TextView
-            android:id="@+id/tv_favorite_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="My Favorite Video"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_description" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerView"
-            android:layout_width="375dp"
-            android:layout_height="331dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_favorite_header"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tv_favorite_header"
-            app:layout_constraintTop_toBottomOf="@+id/tv_favorite_header"
-            app:layout_constraintVertical_bias="1.0"
-            tools:listitem="@layout/item_my_video" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

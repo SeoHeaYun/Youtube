@@ -16,17 +16,22 @@ class VideoDetailActivity : AppCompatActivity() {
 
         setupView()
 
+        binding.buttonBack.setOnClickListener{
+            onBackPressed()
+        }
+
     }
 
     private fun setupView() {
-        val Id = intent.getStringExtra("ID")
-        val videoTitle = intent.getStringExtra("VIDEO_TITLE")
-        val videoDescription = intent.getStringExtra("VIDEO_DESCRIPTION")
+        val item = intent.getSerializableExtra("item") as LikeItemModel
+
         Glide.with(this)
-            .load("https://www.youtube.com/embed/${Id}")
+            .load(item.url)
             .into(binding.videoImageView)
-        binding.titleTextView.setText(videoTitle)
-        binding.descriptionTextView.setText(videoDescription)
+
+        binding.titleTextView.text = item.title
+        binding.descriptionTextView.text = item.desc
+
     }
 
 
