@@ -94,24 +94,26 @@ class VideoViewModel(
     }
 
 
-    private fun creatMostPopularVideoListItems(entity: VideoEntity): List<HomeItem.mostPopularItem> {
+    private fun creatMostPopularVideoListItems(entity: VideoEntity): List<HomeItem.MostPopularItem> {
         return entity.items.map {
             val snippet = it.snippet
-            HomeItem.mostPopularItem(
+            HomeItem.MostPopularItem(
                 snippet.thumbnails.high.url,
                 snippet.description,
-                snippet.title
+                snippet.title,
+                snippet.channelTitle
             )
         }
     }
 
-    private fun creatCategoryPopularItems(entity: VideoEntity): List<HomeItem.categoryPopularItem> {
+    private fun creatCategoryPopularItems(entity: VideoEntity): List<HomeItem.CategoryPopularItem> {
         return entity.items.map {
             val snippet = it.snippet
-            HomeItem.categoryPopularItem(
+            HomeItem.CategoryPopularItem(
                 snippet.thumbnails.high.url,
                 snippet.description,
-                snippet.title
+                snippet.title,
+                snippet.channelTitle
             )
         }
     }

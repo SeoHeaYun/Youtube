@@ -1,15 +1,14 @@
 package kr.camp.youtube.view.detail
 
-import android.content.ClipData
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
-import kr.camp.youtube.view.home.state.HomeItem
-import kr.camp.youtube.view.search.state.item.SearchItem
+import kr.camp.youtube.view.Intent.IntentKey
 import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.detail.model.OnLikeActionListner
+import kr.camp.youtube.view.home.state.HomeItem
 
 class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
@@ -17,7 +16,8 @@ class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        val getCategoryItem: ArrayList<HomeItem.CategoryPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
+        val getMostPopularItem: ArrayList<HomeItem.MostPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
         setupView()
 
     }

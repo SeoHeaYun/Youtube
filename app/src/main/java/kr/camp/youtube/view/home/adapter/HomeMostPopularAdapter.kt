@@ -9,17 +9,17 @@ import kr.camp.youtube.databinding.ItemMostpopularVideoBinding
 import kr.camp.youtube.view.home.state.HomeItem
 
 class HomeMostPopularAdapter(
-    private val onItemClick: (HomeItem.mostPopularItem) -> Unit = {}
+    private val onItemClick: (HomeItem.MostPopularItem) -> Unit = {}
 ) : RecyclerView.Adapter<HomeMostPopularAdapter.MostPopularItemViewHolder>() {
 
-    private val homePopularlList = mutableListOf<HomeItem.mostPopularItem>()
+    private val homePopularlList = mutableListOf<HomeItem.MostPopularItem>()
 
     class MostPopularItemViewHolder(
         var binding: ItemMostpopularVideoBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val glide = Glide.with(binding.root)
-        fun bind(homePopularItemPosition: HomeItem.mostPopularItem) = with(binding) {
+        fun bind(homePopularItemPosition: HomeItem.MostPopularItem) = with(binding) {
             glide.load(homePopularItemPosition.thumbnailUrl).into(thumbnailImageView)
             videoTitleTextView.text = homePopularItemPosition.videoTitle
         }
@@ -45,7 +45,7 @@ class HomeMostPopularAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateItem(newHomePopularList: List<HomeItem.mostPopularItem>) {
+    fun updateItem(newHomePopularList: List<HomeItem.MostPopularItem>) {
         this.homePopularlList.clear()
         this.homePopularlList.addAll(newHomePopularList)
         notifyDataSetChanged()
