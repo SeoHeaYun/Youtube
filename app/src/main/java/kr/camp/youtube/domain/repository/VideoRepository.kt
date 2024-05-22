@@ -1,6 +1,6 @@
 package kr.camp.youtube.domain.repository
 
-import kr.camp.youtube.data.model.VideoResponce.VideoResponce
+import kr.camp.youtube.data.model.video.VideoResponce
 
 
 interface VideoRepository {

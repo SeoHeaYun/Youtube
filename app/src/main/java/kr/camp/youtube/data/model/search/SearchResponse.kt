@@ -1,4 +1,4 @@
-package kr.camp.youtube.data.model
+package kr.camp.youtube.data.model.search
 
 import com.google.gson.annotations.SerializedName
 

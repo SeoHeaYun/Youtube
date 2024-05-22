@@ -1,9 +1,9 @@
-package kr.camp.youtube.data.model.VideoResponce
+package kr.camp.youtube.data.model.video
 
 
 import com.google.gson.annotations.SerializedName
 
-data class MediumResponce(
+data class StandardResponce(
     @SerializedName("height")
     val height: Int?,
     @SerializedName("url")

@@ -1,4 +1,4 @@
-package kr.camp.youtube.domain.model
+package kr.camp.youtube.domain.model.search
 
 data class SearchEntity(
     val kind: String?,

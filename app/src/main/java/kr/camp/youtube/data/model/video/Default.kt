@@ -1,9 +1,9 @@
-package kr.camp.youtube.data.model.VideoResponce
+package kr.camp.youtube.data.model.video
 
 
 import com.google.gson.annotations.SerializedName
 
-data class HighResponce(
+data class DefaultResponce(
     @SerializedName("height")
     val height: Int?,
     @SerializedName("url")

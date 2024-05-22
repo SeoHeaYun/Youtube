@@ -14,7 +14,6 @@ import kr.camp.youtube.BuildConfig
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentMyVideoBinding
 import kr.camp.youtube.network.YoutubeRetrofitClient
-import kr.camp.youtube.view.detail.VideoDetailActivity
 import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.main.MainActivity
 import kr.camp.youtube.view.myVideo.adapter.MyVideoAdapter
