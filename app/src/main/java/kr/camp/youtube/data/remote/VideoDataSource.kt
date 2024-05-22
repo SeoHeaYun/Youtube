@@ -1,7 +1,7 @@
 package kr.camp.youtube.data.remote
 
 import kr.camp.youtube.BuildConfig
-import kr.camp.youtube.data.model.VideoResponce.VideoResponce
+import kr.camp.youtube.data.model.video.VideoResponce
 import retrofit2.http.GET
 import retrofit2.http.Query
 

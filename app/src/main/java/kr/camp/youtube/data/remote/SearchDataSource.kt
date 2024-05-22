@@ -1,7 +1,7 @@
 package kr.camp.youtube.data.remote
 
 import kr.camp.youtube.BuildConfig
-import kr.camp.youtube.data.model.SearchResponse
+import kr.camp.youtube.data.model.search.SearchResponse
 import kr.camp.youtube.util.QueryUtil
 import retrofit2.http.GET
 import retrofit2.http.Query

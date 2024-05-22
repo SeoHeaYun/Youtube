@@ -1,6 +1,6 @@
 package kr.camp.youtube.data.repository
 
-import kr.camp.youtube.data.model.VideoResponce.VideoResponce
+import kr.camp.youtube.data.model.video.VideoResponce
 import kr.camp.youtube.data.remote.VideoDataSource
 import kr.camp.youtube.domain.exception.NetworkException
 import kr.camp.youtube.domain.exception.QuotaExceededException
