@@ -7,19 +7,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlinx.coroutines.launch
-import kr.camp.youtube.BuildConfig
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentMyVideoBinding
-import kr.camp.youtube.network.YoutubeRetrofitClient
-import kr.camp.youtube.view.detail.VideoDetailActivity
+import kr.camp.youtube.view.detail.model.DummyDataManager.getDummyData
+import kr.camp.youtube.view.detail.model.DummyDataManager.updateDummyData
 import kr.camp.youtube.view.detail.model.LikeItemModel
-import kr.camp.youtube.view.detail.model.makeDummy
-import kr.camp.youtube.view.main.MainActivity
 import kr.camp.youtube.view.myVideo.adapter.MyVideoAdapter
 
 
@@ -38,7 +32,7 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
     }
 
     // 사용자의 좋아요를 받은 항목을 저장하는 리스트
-    private var likedItems: List<LikeItemModel> = listOf()
+    private var likedItems: List<LikeItemModel> = mutableListOf()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -62,7 +56,7 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
         binding.RecyclerView.layoutManager = gridLayoutManager
 
         //좋아요 더미데이터 추가
-        likedItems = makeDummy()
+        likedItems = getDummyData()
 
         //좋아요 리스트와 어댑터 연결
         videoAdapter = MyVideoAdapter(likedItems.toMutableList())

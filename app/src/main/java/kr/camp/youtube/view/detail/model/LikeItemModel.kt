@@ -18,10 +18,15 @@ data class LikeItemModel (
     var url: String,
     var desc: String,
     var isLike: Boolean = false
-): Serializable
+): Serializable {
+    fun changeLike() {
+        isLike = !isLike
+    }
+}
 
-fun makeDummy(): List<LikeItemModel> {
-    return listOf(
+object DummyDataManager {
+
+    private val dummyData: MutableList<LikeItemModel> = mutableListOf(
         LikeItemModel(
             "고양이가 나오는 영상",
             "고양이채널",
@@ -42,13 +47,16 @@ fun makeDummy(): List<LikeItemModel> {
             "https://i.ytimg.com/vi/FRqjPXL5i0M/hqdefault.jpg",
             "조랑말이 나오는 영상입니당",
             true
-        ),
-        LikeItemModel(
-            "조랑말이 나오는 동영상",
-            "조랑말",
-            "https://i.ytimg.com/vi/FRqjPXL5i0M/hqdefault.jpg",
-            "조랑말이 나오는 영상입니당",
-            false
         )
     )
+
+    fun getDummyData(): List<LikeItemModel> {
+        return dummyData
+    }
+
+    fun updateDummyData(updatedData: List<LikeItemModel>) {
+        dummyData.clear()
+        dummyData.addAll(updatedData)
+    }
 }
+
