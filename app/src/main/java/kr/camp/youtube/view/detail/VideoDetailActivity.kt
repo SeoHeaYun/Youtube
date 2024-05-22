@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
+import kr.camp.youtube.extension.toSpanned
 import kr.camp.youtube.view.intent.IntentKey
 import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.detail.model.OnLikeActionListner
@@ -28,8 +29,8 @@ class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
             .load(detailItem.thumbnailUrl)
             .into(binding.videoImageView)
 
-        titleTextView.text = detailItem.videoTitle
-        descriptionTextView.text = detailItem.videoDescription
+        titleTextView.text = detailItem.videoTitle.toSpanned()
+        descriptionTextView.text = detailItem.videoDescription.toSpanned()
     }
 
     override fun onLike(item: LikeItemModel) {
