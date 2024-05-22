@@ -22,8 +22,6 @@ class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
 
     }
 
-
-
     override fun onBackPressed() {
         super.onBackPressed()
 
@@ -34,11 +32,11 @@ class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
         val getCategoryItem: ArrayList<HomeItem.CategoryPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
         val getMostPopularItem: ArrayList<HomeItem.MostPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
 
-        val Id = intent.getStringExtra("ID")
+        val thumbnailUrl = intent.getStringExtra("THUMBNAIL_URL")
         val videoTitle = intent.getStringExtra("VIDEO_TITLE")
         val videoDescription = intent.getStringExtra("VIDEO_DESCRIPTION")
         Glide.with(this)
-            .load("https://www.youtube.com/embed/${Id}")
+            .load(thumbnailUrl)
             .into(binding.videoImageView)
         binding.titleTextView.setText(videoTitle)
         binding.descriptionTextView.setText(videoDescription)
