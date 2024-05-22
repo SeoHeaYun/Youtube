@@ -1,8 +1,8 @@
 package kr.camp.youtube.view.home
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentHomeBinding
+import kr.camp.youtube.view.Intent.IntentKey
 import kr.camp.youtube.view.detail.VideoDetailActivity
 import kr.camp.youtube.view.home.state.HomeItem
 import kr.camp.youtube.view.home.adapter.HomeMostPopularAdapter
@@ -50,18 +51,30 @@ class HomeFragment : Fragment() {
 
     private val homeCategoryPopularAdapter: HomeCategoryPopularAdapter by lazy {
         HomeCategoryPopularAdapter(
-            onItemClick = { item -> videoAdapterOnItemClick(item) }
+            onItemClick = { item -> categoryPopularOnItemClick(item) }
         )
     }
 
     private val homeMostPopularAdapter: HomeMostPopularAdapter by lazy {
         HomeMostPopularAdapter(
-            onItemClick = { item -> videoAdapterOnItemClick(item) }
+            onItemClick = { item -> mostPopularOnItemClick(item) }
         )
     }
 
-    private fun videoAdapterOnItemClick(item: HomeItem) {
 
+    private fun categoryPopularOnItemClick(item: HomeItem.CategoryPopularItem) {
+        val intent = Intent(activity, VideoDetailActivity::class.java)
+        val categoryPopularItem = arrayListOf<HomeItem.CategoryPopularItem>(item)
+        intent.putParcelableArrayListExtra(IntentKey.YUKTUBE, categoryPopularItem)
+        startActivity(intent)
+    }
+
+
+    private fun mostPopularOnItemClick(item: HomeItem.MostPopularItem) {
+        val intent = Intent(activity, VideoDetailActivity::class.java)
+        val mostPopularItem = arrayListOf<HomeItem.MostPopularItem>(item)
+        intent.putParcelableArrayListExtra(IntentKey.YUKTUBE, mostPopularItem)
+        startActivity(intent)
     }
 
 

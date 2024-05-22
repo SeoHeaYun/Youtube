@@ -9,7 +9,7 @@ data class SnippetResponce(
     @SerializedName("channelId")
     val channelId: String?,
     @SerializedName("channelTitle")
-    val channelTitle: String?,
+    val channelTitle: String,
     @SerializedName("defaultAudioLanguage")
     val defaultAudioLanguage: String?,
     @SerializedName("description")

@@ -23,11 +23,11 @@ data object CategoryPopularUnknown : CategoryPopularVideoUiState.Notice("알 수
 
 sealed interface CategoryPopularResultList : CategoryPopularVideoUiState {
 
-    val categoryPopularItems: List<HomeItem.categoryPopularItem>
+    val categoryPopularItems: List<HomeItem.CategoryPopularItem>
 
 }
 
 data class CategoryPopularAddList(
-    override val categoryPopularItems: List<HomeItem.categoryPopularItem> = emptyList(),
+    override val categoryPopularItems: List<HomeItem.CategoryPopularItem> = emptyList(),
 ): CategoryPopularResultList
 
