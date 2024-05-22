@@ -20,12 +20,12 @@ data object MostPopularUnknown : MostPopularVideoUiState.Notice("알 수 없는 
 
 
 sealed interface MostPopularVideoResultList : MostPopularVideoUiState {
-    val mostPopularItems: List<HomeItem.mostPopularItem>
+    val mostPopularItems: List<HomeItem.MostPopularItem>
 
 }
 
 data class MostPopularVideoAddList(
-    override val mostPopularItems: List<HomeItem.mostPopularItem> = emptyList(),
+    override val mostPopularItems: List<HomeItem.MostPopularItem> = emptyList(),
 ): MostPopularVideoResultList
 
 
