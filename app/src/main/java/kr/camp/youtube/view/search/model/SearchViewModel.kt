@@ -69,6 +69,7 @@ class SearchViewModel(
             SearchItem.ImageItem(
                 snippet.thumbnails.high.url,
                 snippet.title,
+                snippet.description,
                 snippet.channelTitle
             )
         }

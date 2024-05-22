@@ -1,14 +1,14 @@
 package kr.camp.youtube.view.detail
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
-import kr.camp.youtube.view.Intent.IntentKey
+import kr.camp.youtube.view.intent.IntentKey
 import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.detail.model.OnLikeActionListner
 import kr.camp.youtube.view.home.state.HomeItem
+import kr.camp.youtube.view.intent.item.DetailItem
 
 class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
@@ -20,20 +20,16 @@ class VideoDetailActivity : AppCompatActivity(), OnLikeActionListner {
 
     }
 
+    private fun setupView() = with(binding) {
+        val detailItem = intent.getParcelableExtra(IntentKey.DETAIL_ITEM) as? DetailItem
+            ?: throw NullPointerException()
 
-
-    private fun setupView() {
-        val getCategoryItem: ArrayList<HomeItem.CategoryPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
-        val getMostPopularItem: ArrayList<HomeItem.MostPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
-
-        val Id = intent.getStringExtra("ID")
-        val videoTitle = intent.getStringExtra("VIDEO_TITLE")
-        val videoDescription = intent.getStringExtra("VIDEO_DESCRIPTION")
-        Glide.with(this)
-            .load("https://www.youtube.com/embed/${Id}")
+        Glide.with(this@VideoDetailActivity)
+            .load(detailItem.thumbnailUrl)
             .into(binding.videoImageView)
-        binding.titleTextView.setText(videoTitle)
-        binding.descriptionTextView.setText(videoDescription)
+
+        titleTextView.text = detailItem.videoTitle
+        descriptionTextView.text = detailItem.videoDescription
     }
 
     override fun onLike(item: LikeItemModel) {
