@@ -15,3 +15,26 @@ data class LikeItemModel (
     var url: String,
     var isLike: Boolean = false
 )
+
+fun makeDummy(): List<LikeItemModel> {
+    return listOf(
+        LikeItemModel(
+            "고양이가 나오는 영상",
+            "고양이채널",
+            "https://i.ytimg.com/vi/aip80BfeuDg/hqdefault.jpg",
+            true
+        ),
+        LikeItemModel(
+            "강아지가 나오는 영상",
+            "강아지채널",
+            "https://i.ytimg.com/vi/BR7OFcEFRDw/hqdefault.jpg",
+            true
+        ),
+        LikeItemModel(
+            "조랑말이 나오는 동영상",
+            "조랑말",
+            "https://i.ytimg.com/vi/FRqjPXL5i0M/hqdefault.jpg",
+            true
+        )
+    )
+}

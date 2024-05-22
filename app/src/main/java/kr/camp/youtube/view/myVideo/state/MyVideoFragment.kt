@@ -16,6 +16,7 @@ import kr.camp.youtube.databinding.FragmentMyVideoBinding
 import kr.camp.youtube.network.YoutubeRetrofitClient
 import kr.camp.youtube.view.detail.VideoDetailActivity
 import kr.camp.youtube.view.detail.model.LikeItemModel
+import kr.camp.youtube.view.detail.model.makeDummy
 import kr.camp.youtube.view.main.MainActivity
 import kr.camp.youtube.view.myVideo.adapter.MyVideoAdapter
 
@@ -51,38 +52,16 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
         _binding = FragmentMyVideoBinding.bind(view)
 
         val gridLayoutManager = GridLayoutManager(requireContext(),2)
-        binding.recylclerView.layoutManager = gridLayoutManager
+        binding.RecyclerView.layoutManager = gridLayoutManager
 
-        //메인액티비티에서 좋아요 목록 가져오기
-        val mainActivity = activity as MainActivity
-        likedItems = mainActivity.likedItems
+        //좋아요 더미데이터 추가
+        likedItems = makeDummy()
 
         //좋아요 리스트와 어댑터 연결
         videoAdapter = MyVideoAdapter(likedItems.toMutableList())
-        binding.recylclerView.adapter = videoAdapter
+        binding.RecyclerView.adapter = videoAdapter
 
-        //유튜브 비디오 썸네일 가져오기
-        fetchVideos()
-    }
 
-    private fun fetchVideos(){
-        val apiKey = BuildConfig.YOUTUBE_API_KEY
-
-        lifecycleScope.launch{
-            try {
-                val response = YoutubeRetrofitClient.searchDataSource.getSearch(
-                    query = "Android development",
-                    apiKey = apiKey,
-                    pageToken = ""
-                )
-
-                //아이템 업데이트
-                videoAdapter.notifyDataSetChanged()
-
-            } catch(e:Exception){
-                Toast.makeText(requireContext(),"영상을 불러오는데 실패하였습니다",Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     override fun onDestroyView(){
