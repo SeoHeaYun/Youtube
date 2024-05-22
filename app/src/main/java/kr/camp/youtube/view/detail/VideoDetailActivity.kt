@@ -1,7 +1,6 @@
 package kr.camp.youtube.view.detail
 
 import android.app.Activity
-import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -11,8 +10,6 @@ import kr.camp.youtube.databinding.ActivityVideoDetailBinding
 import kr.camp.youtube.view.detail.model.DummyDataManager
 import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.Intent.IntentKey
-import kr.camp.youtube.view.detail.model.LikeItemModel
-import kr.camp.youtube.view.detail.model.OnLikeActionListner
 import kr.camp.youtube.view.home.state.HomeItem
 
 
@@ -31,11 +28,6 @@ class VideoDetailActivity : AppCompatActivity() {
         setupView()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-        overridePendingTransition(R.anim.none, R.anim.to_down_exit)
-    }
 
     private fun setupView() {
 
@@ -83,9 +75,13 @@ class VideoDetailActivity : AppCompatActivity() {
         super.onBackPressed()
         val resultIntent = Intent().apply {
             putExtra("item", item)
+
+            overridePendingTransition(R.anim.none, R.anim.to_down_exit)
         }
         setResult(Activity.RESULT_OK, resultIntent)
+
         finish()
+
     }
 
 
