@@ -1,19 +1,19 @@
 package kr.camp.youtube.domain.mapper
 
-import kr.camp.youtube.data.model.IdResponse
-import kr.camp.youtube.data.model.ItemResponse
-import kr.camp.youtube.data.model.PageInfoResponse
-import kr.camp.youtube.data.model.SearchResponse
-import kr.camp.youtube.data.model.SnippetResponse
-import kr.camp.youtube.data.model.ThumbnailResponse
-import kr.camp.youtube.data.model.ThumbnailsResponse
-import kr.camp.youtube.domain.model.IdEntity
-import kr.camp.youtube.domain.model.ItemEntity
-import kr.camp.youtube.domain.model.PageInfoEntity
-import kr.camp.youtube.domain.model.SearchEntity
-import kr.camp.youtube.domain.model.SnippetEntity
-import kr.camp.youtube.domain.model.ThumbnailEntity
-import kr.camp.youtube.domain.model.ThumbnailsEntity
+import kr.camp.youtube.data.model.search.IdResponse
+import kr.camp.youtube.data.model.search.ItemResponse
+import kr.camp.youtube.data.model.search.PageInfoResponse
+import kr.camp.youtube.data.model.search.SearchResponse
+import kr.camp.youtube.data.model.search.SnippetResponse
+import kr.camp.youtube.data.model.search.ThumbnailResponse
+import kr.camp.youtube.data.model.search.ThumbnailsResponse
+import kr.camp.youtube.domain.model.search.IdEntity
+import kr.camp.youtube.domain.model.search.ItemEntity
+import kr.camp.youtube.domain.model.search.PageInfoEntity
+import kr.camp.youtube.domain.model.search.SearchEntity
+import kr.camp.youtube.domain.model.search.SnippetEntity
+import kr.camp.youtube.domain.model.search.ThumbnailEntity
+import kr.camp.youtube.domain.model.search.ThumbnailsEntity
 
 fun SearchResponse.toEntity(): SearchEntity {
     return SearchEntity(
