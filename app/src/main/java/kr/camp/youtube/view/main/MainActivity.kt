@@ -9,14 +9,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.ActivityMainBinding
-import kr.camp.youtube.view.detail.VideoDetailActivity
-import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.myvideo.state.MyVideoFragment
 import kr.camp.youtube.view.home.HomeFragment
-import kr.camp.youtube.view.intent.item.DetailItem
+import kr.camp.youtube.view.key.DataKey
+import kr.camp.youtube.view.key.item.DetailItem
 import kr.camp.youtube.view.registry.DetailItemRegistry
 import kr.camp.youtube.view.search.SearchFragment
-import kr.camp.youtube.view.search.state.item.SearchItem
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,8 +40,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadLikes() {
-        val sharedPreferences = getSharedPreferences("Yuktube2222", Context.MODE_PRIVATE)
-        val jsonLikes = sharedPreferences.getStringSet("likes", emptySet()) ?: emptySet()
+        val sharedPreferences = getSharedPreferences(DataKey.LIKE_FILE_NAME, Context.MODE_PRIVATE)
+        val jsonLikes = sharedPreferences.getStringSet(DataKey.LIKES, emptySet()) ?: emptySet()
         val likes = jsonLikes.map {
             val split = it.split("|", limit = 2)
             val className = split[0]

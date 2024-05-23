@@ -1,27 +1,18 @@
 package kr.camp.youtube.view.detail
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
-import com.google.gson.reflect.TypeToken
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
 import kr.camp.youtube.extension.toSpanned
-import kr.camp.youtube.view.intent.IntentKey
+import kr.camp.youtube.view.key.IntentKey
 import kr.camp.youtube.view.detail.model.LikeItemModel
-import kr.camp.youtube.view.detail.model.SharedPreferencesManager
-import kr.camp.youtube.view.intent.item.DetailItem
+import kr.camp.youtube.view.key.DataKey
+import kr.camp.youtube.view.key.item.DetailItem
 import kr.camp.youtube.view.registry.DetailItemRegistry
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 
 
 class VideoDetailActivity : AppCompatActivity() {
@@ -78,12 +69,12 @@ class VideoDetailActivity : AppCompatActivity() {
     }
 
     private fun save() {
-        val sharedPreferences = getSharedPreferences("Yuktube2222", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(DataKey.LIKE_FILE_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         val likes = DetailItemRegistry.likes.map {
             "${it::class.java.name}|${gson.toJson(it)}".apply { println(this) }
         }.toSet()
-        editor.putStringSet("likes", likes)
+        editor.putStringSet(DataKey.LIKES, likes)
         editor.apply()
     }
 

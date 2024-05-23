@@ -1,6 +1,6 @@
 package kr.camp.youtube.view.registry
 
-import kr.camp.youtube.view.intent.item.DetailItem
+import kr.camp.youtube.view.key.item.DetailItem
 
 object DetailItemRegistry {
 

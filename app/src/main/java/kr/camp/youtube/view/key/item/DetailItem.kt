@@ -1,4 +1,4 @@
-package kr.camp.youtube.view.intent.item
+package kr.camp.youtube.view.key.item
 
 import android.os.Parcelable
 

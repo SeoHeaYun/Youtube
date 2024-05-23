@@ -3,8 +3,8 @@ package kr.camp.youtube.util
 import android.content.Context
 import android.content.Intent
 import kr.camp.youtube.view.detail.VideoDetailActivity
-import kr.camp.youtube.view.intent.IntentKey
-import kr.camp.youtube.view.intent.item.DetailItem
+import kr.camp.youtube.view.key.IntentKey
+import kr.camp.youtube.view.key.item.DetailItem
 
 object ActivityUtil {
 

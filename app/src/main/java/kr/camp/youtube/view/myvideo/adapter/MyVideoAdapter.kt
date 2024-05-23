@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemMyVideoBinding
+import kr.camp.youtube.extension.toSpanned
 import kr.camp.youtube.view.detail.VideoDetailActivity
-import kr.camp.youtube.view.intent.IntentKey
-import kr.camp.youtube.view.intent.item.DetailItem
+import kr.camp.youtube.view.key.IntentKey
+import kr.camp.youtube.view.key.item.DetailItem
 import kr.camp.youtube.view.myvideo.state.MyVideoFragment
 import kr.camp.youtube.view.registry.DetailItemRegistry
 
@@ -27,8 +28,8 @@ class MyVideoAdapter : RecyclerView.Adapter<MyVideoAdapter.VideoViewHolder>() {
         val item = items[position]
 
         //텍스트뷰 로딩
-        holder.textView_title.text = item.videoTitle
-        holder.textView_channelTitle.text = item.channelName
+        holder.textView_title.text = item.videoTitle.toSpanned()
+        holder.textView_channelTitle.text = item.channelName.toSpanned()
 
         //썸네일 이미지 로딩
         Glide.with(holder.imageView_thumbnail.context)

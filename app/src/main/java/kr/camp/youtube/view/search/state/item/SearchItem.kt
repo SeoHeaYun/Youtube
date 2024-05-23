@@ -1,7 +1,7 @@
 package kr.camp.youtube.view.search.state.item
 
 import kotlinx.parcelize.Parcelize
-import kr.camp.youtube.view.intent.item.DetailItem
+import kr.camp.youtube.view.key.item.DetailItem
 
 sealed interface SearchItem {
 

@@ -1,7 +1,6 @@
 package kr.camp.youtube.view.search
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,8 +21,6 @@ import kr.camp.youtube.databinding.FragmentSearchBinding
 import kr.camp.youtube.extension.addOnScrolled
 import kr.camp.youtube.util.ActivityUtil
 import kr.camp.youtube.util.QueryUtil
-import kr.camp.youtube.view.detail.VideoDetailActivity
-import kr.camp.youtube.view.intent.IntentKey
 import kr.camp.youtube.view.search.adapter.SearchAdpater
 import kr.camp.youtube.view.search.model.SearchViewModel
 import kr.camp.youtube.view.search.model.SearchViewModelFactory
