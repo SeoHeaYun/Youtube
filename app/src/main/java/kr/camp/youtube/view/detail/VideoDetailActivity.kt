@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
@@ -17,6 +18,7 @@ import kr.camp.youtube.view.intent.IntentKey
 import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.detail.model.SharedPreferencesManager
 import kr.camp.youtube.view.intent.item.DetailItem
+import kr.camp.youtube.view.registry.DetailItemRegistry
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -25,9 +27,10 @@ import org.json.JSONObject
 class VideoDetailActivity : AppCompatActivity() {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
     private lateinit var item: LikeItemModel
+
     // 좋아요를 눌러 선택된 아이템을 저장하는 리스트
     private var likedItems: ArrayList<LikeItemModel> = ArrayList()
-    private var stringPrefs : String? = null
+    private var stringPrefs: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,31 +38,21 @@ class VideoDetailActivity : AppCompatActivity() {
 
         overridePendingTransition(R.anim.from_down_enter, R.anim.none)
         setupView()
-
-        getPrefLikeItems("likeditems")
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.none, R.anim.to_down_exit)
-        val resultIntent = Intent().apply {
+        /*val resultIntent = Intent().apply {
             putExtra(IntentKey.DETAIL_ITEM, item)
         }
         setResult(Activity.RESULT_OK, resultIntent)
-        finish()
+        finish()*/
     }
 
     private fun setupView() = with(binding) {
         val detailItem = intent.getParcelableExtra(IntentKey.DETAIL_ITEM) as? DetailItem
             ?: throw NullPointerException()
-
-        item = LikeItemModel(
-            detailItem.videoTitle,
-            detailItem.channelName,
-            detailItem.thumbnailUrl,
-            detailItem.videoDescription,
-            if (detailItem is LikeItemModel) detailItem.isLike else false
-        )
 
         Glide.with(this@VideoDetailActivity)
             .load(detailItem.thumbnailUrl)
@@ -67,35 +60,34 @@ class VideoDetailActivity : AppCompatActivity() {
 
         titleTextView.text = detailItem.videoTitle.toSpanned()
         descriptionTextView.text = detailItem.videoDescription.toSpanned()
-        likeButton.text = if (item.isLike) "Like" else "UnLike"
 
-        likeButton.setOnClickListener{
-            if (!item.isLike) {
-                addPrefItem("likeditems", likedItems)
-                item.isLike = true
-                likeButton.text = "LIKE"
-                Log.d("TAG", likedItems.toString())
-            } else {
-                deletePrefItem(item.thumbnailUrl)
-                item.isLike = false
-                likeButton.text = "UNLIKE"
-                Log.d("TAG2", likedItems.toString())
-            }
+        likeButton.text = if (DetailItemRegistry.isLike(detailItem)) UNLIKE else LIKE
+        likeButton.setOnClickListener {
+            likeButton.text = if (DetailItemRegistry.switchLike(detailItem)) UNLIKE else LIKE
+            save()
         }
 
-
-        buttonBack.setOnClickListener{
-            val resultIntent = Intent().apply {
+        buttonBack.setOnClickListener {
+            /*val resultIntent = Intent().apply {
                 putExtra(IntentKey.DETAIL_ITEM, item)
             }
-            setResult(Activity.RESULT_OK, resultIntent)
-
-            super.finish()
+            setResult(Activity.RESULT_OK, resultIntent)*/
+            finish()
             overridePendingTransition(R.anim.none, R.anim.to_down_exit)
         }
     }
 
-    fun addPrefItem(key: String, items: ArrayList<LikeItemModel>) {
+    private fun save() {
+        val sharedPreferences = getSharedPreferences("Yuktube2222", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val likes = DetailItemRegistry.likes.map {
+            "${it::class.java.name}|${gson.toJson(it)}".apply { println(this) }
+        }.toSet()
+        editor.putStringSet("likes", likes)
+        editor.apply()
+    }
+
+    /*fun addPrefItem(key: String, items: ArrayList<LikeItemModel>) {
         val sharedPreferences = getSharedPreferences("shared preferences", Context.MODE_PRIVATE)
         val edit = sharedPreferences.edit()
         val jsonArray = JSONArray()
@@ -121,5 +113,12 @@ class VideoDetailActivity : AppCompatActivity() {
         val edit = sharedPreferences.edit()
         edit.remove(thumbnailUrl)
         edit.apply()
+    }*/
+
+    private companion object {
+        const val LIKE = "Like"
+        const val UNLIKE = "UnLike"
+
+        val gson = Gson()
     }
 }

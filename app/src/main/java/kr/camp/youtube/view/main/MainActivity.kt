@@ -1,16 +1,22 @@
 package kr.camp.youtube.view.main
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.ActivityMainBinding
+import kr.camp.youtube.view.detail.VideoDetailActivity
 import kr.camp.youtube.view.detail.model.LikeItemModel
 import kr.camp.youtube.view.myvideo.state.MyVideoFragment
 import kr.camp.youtube.view.home.HomeFragment
+import kr.camp.youtube.view.intent.item.DetailItem
+import kr.camp.youtube.view.registry.DetailItemRegistry
 import kr.camp.youtube.view.search.SearchFragment
+import kr.camp.youtube.view.search.state.item.SearchItem
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,7 +37,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        loadLikes()
         viewPager()
+    }
+
+    private fun loadLikes() {
+        val sharedPreferences = getSharedPreferences("Yuktube2222", Context.MODE_PRIVATE)
+        val jsonLikes = sharedPreferences.getStringSet("likes", emptySet()) ?: emptySet()
+        val likes = jsonLikes.map {
+            val split = it.split("|", limit = 2)
+            val className = split[0]
+            val clazz = Class.forName(className)
+            val jsonLike = split[1]
+            gson.fromJson(jsonLike, clazz) as DetailItem
+        }.toMutableSet()
+        DetailItemRegistry.setLikes(likes)
     }
 
     //ViewPager2
@@ -70,10 +90,9 @@ class MainActivity : AppCompatActivity() {
         return if (tabIndex == currentPosition) blackIcons[tabIndex] else whiteIcons[tabIndex]
     }
 
-    // 좋아요를 눌러 선택된 아이템을 저장하는 리스트
-    var likedItems: ArrayList<LikeItemModel> = ArrayList()
-
-
+    private companion object {
+        val gson = Gson()
+    }
 }
 
 

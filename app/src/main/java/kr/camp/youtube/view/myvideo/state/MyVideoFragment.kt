@@ -21,6 +21,7 @@ import kr.camp.youtube.view.detail.model.SharedPreferencesManager
 import kr.camp.youtube.view.intent.IntentKey
 import kr.camp.youtube.view.myvideo.adapter.MyVideoAdapter
 import kr.camp.youtube.view.myvideo.adapter.MyVideoViewModel
+import kr.camp.youtube.view.registry.DetailItemRegistry
 
 
 class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
@@ -52,15 +53,19 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
         val gridLayoutManager = GridLayoutManager(requireContext(), 2)
         binding.RecyclerView.layoutManager = gridLayoutManager
 
-        videoAdapter = MyVideoAdapter(requireContext(), listOf())
+        videoAdapter = MyVideoAdapter()
         binding.RecyclerView.adapter = videoAdapter
 
-        viewModel.likedItems.observe(viewLifecycleOwner, Observer { likedItems ->
+        /*viewModel.likedItems.observe(viewLifecycleOwner, Observer { likedItems ->
             videoAdapter.updateItems(likedItems)
-        })
-
+        })*/
         viewModel.updateLikedItems()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        DetailItemRegistry.likes
+        videoAdapter.updateItems()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

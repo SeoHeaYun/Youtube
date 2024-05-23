@@ -1,7 +1,7 @@
 package kr.camp.youtube.view.myvideo.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemMyVideoBinding
 import kr.camp.youtube.view.detail.VideoDetailActivity
-import kr.camp.youtube.view.detail.model.LikeItemModel
-import kr.camp.youtube.view.detail.model.SharedPreferencesManager
 import kr.camp.youtube.view.intent.IntentKey
+import kr.camp.youtube.view.intent.item.DetailItem
 import kr.camp.youtube.view.myvideo.state.MyVideoFragment
+import kr.camp.youtube.view.registry.DetailItemRegistry
 
+class MyVideoAdapter : RecyclerView.Adapter<MyVideoAdapter.VideoViewHolder>() {
 
-class MyVideoAdapter(private val context: Context, private var items: List<LikeItemModel>) :
-    RecyclerView.Adapter<MyVideoAdapter.VideoViewHolder>() {
+    private var items = listOf<DetailItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val binding = ItemMyVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -49,8 +49,9 @@ class MyVideoAdapter(private val context: Context, private var items: List<LikeI
         return items.size
     }
 
-    fun updateItems(newItems: List<LikeItemModel>){
-        items = newItems
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateItems(){
+        this.items = DetailItemRegistry.likes.toMutableList()
         notifyDataSetChanged()
     }
 
@@ -59,7 +60,7 @@ class MyVideoAdapter(private val context: Context, private var items: List<LikeI
         RecyclerView.ViewHolder(binding.root) {
         var imageView_thumbnail = binding.imageViewThumbnail
         var textView_title = binding.textViewTitle
-        var textView_channelTitle = binding.textViewVideoId
+        var textView_channelTitle = binding.textViewChannelName
         var constraintLayout = binding.contraintlayout
 
         init {
