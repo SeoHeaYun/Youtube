@@ -1,6 +1,7 @@
 package kr.camp.youtube.view.search
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,11 +20,15 @@ import kotlinx.coroutines.launch
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentSearchBinding
 import kr.camp.youtube.extension.addOnScrolled
+import kr.camp.youtube.util.ActivityUtil
 import kr.camp.youtube.util.QueryUtil
+import kr.camp.youtube.view.detail.VideoDetailActivity
+import kr.camp.youtube.view.intent.IntentKey
 import kr.camp.youtube.view.search.adapter.SearchAdpater
 import kr.camp.youtube.view.search.model.SearchViewModel
 import kr.camp.youtube.view.search.model.SearchViewModelFactory
 import kr.camp.youtube.view.search.state.SearchUiState
+import kr.camp.youtube.view.search.state.item.SearchItem
 
 class SearchFragment : Fragment() {
 
@@ -56,7 +61,11 @@ class SearchFragment : Fragment() {
     private fun registerRecyclerView() = with(binding.searchResultRecyclerView) {
         val linearLayoutManager = LinearLayoutManager(context)
         layoutManager = linearLayoutManager
-        adapter = SearchAdpater {}.apply {
+        adapter = SearchAdpater { item ->
+            if (item is SearchItem.ImageItem) {
+                ActivityUtil.startVideoDetailActivity(requireContext(), item)
+            }
+        }.apply {
             searchAdapter = this
         }
         itemAnimator = null
@@ -103,6 +112,9 @@ class SearchFragment : Fragment() {
             }
         }
     }
+
+
+
 
     private fun registerSearchBar() = with(binding) {
         val search = {

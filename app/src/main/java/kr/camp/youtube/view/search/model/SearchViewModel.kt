@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import kr.camp.youtube.domain.exception.NetworkException
 import kr.camp.youtube.domain.exception.QuotaExceededException
 import kr.camp.youtube.domain.exception.TimeoutException
-import kr.camp.youtube.domain.model.SearchEntity
+import kr.camp.youtube.domain.model.search.SearchEntity
 import kr.camp.youtube.domain.usecase.SearchUseCase
 import kr.camp.youtube.view.search.state.SearchUiState
 import kr.camp.youtube.view.search.state.item.SearchItem
@@ -69,6 +69,7 @@ class SearchViewModel(
             SearchItem.ImageItem(
                 snippet.thumbnails.high.url,
                 snippet.title,
+                snippet.description,
                 snippet.channelTitle
             )
         }

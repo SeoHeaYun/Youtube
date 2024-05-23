@@ -7,10 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
+import kr.camp.youtube.extension.toSpanned
+import kr.camp.youtube.view.intent.IntentKey
 import kr.camp.youtube.view.detail.model.DummyDataManager
 import kr.camp.youtube.view.detail.model.LikeItemModel
-import kr.camp.youtube.view.Intent.IntentKey
-import kr.camp.youtube.view.home.state.HomeItem
+import kr.camp.youtube.view.intent.item.DetailItem
 
 
 class VideoDetailActivity : AppCompatActivity() {
@@ -22,42 +23,50 @@ class VideoDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         overridePendingTransition(R.anim.from_down_enter, R.anim.none)
-        item = intent.getSerializableExtra("item") as LikeItemModel
+//        item = intent.getSerializableExtra("item") as LikeItemModel
+
         setupView()
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.none, R.anim.to_down_exit)
+        val resultIntent = Intent().apply {
+            putExtra(IntentKey.DETAIL_ITEM, item)
+        }
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
     }
 
-    private fun setupView() {
+    private fun setupView() = with(binding) {
+        val detailItem = intent.getParcelableExtra(IntentKey.DETAIL_ITEM) as? DetailItem
+            ?: throw NullPointerException()
 
-        val getCategoryItem: ArrayList<HomeItem.CategoryPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
-        val getMostPopularItem: ArrayList<HomeItem.MostPopularItem>? = intent.getParcelableArrayListExtra(IntentKey.YUKTUBE)
+        item = LikeItemModel(
+            detailItem.videoTitle,
+            detailItem.channelName,
+            detailItem.thumbnailUrl,
+            detailItem.videoDescription,
+            if (detailItem is LikeItemModel) detailItem.isLike else false
+        )
 
-        val thumbnailUrl = intent.getStringExtra("THUMBNAIL_URL")
-        val videoTitle = intent.getStringExtra("VIDEO_TITLE")
-        val videoDescription = intent.getStringExtra("VIDEO_DESCRIPTION")
-        Glide.with(this)
-            .load(thumbnailUrl)
-            .load(item.url)
+        Glide.with(this@VideoDetailActivity)
+            .load(detailItem.thumbnailUrl)
             .into(binding.videoImageView)
 
-        binding.titleTextView.text = item.title
-        binding.descriptionTextView.text = item.desc
+        titleTextView.text = detailItem.videoTitle.toSpanned()
+        descriptionTextView.text = detailItem.videoDescription.toSpanned()
+        likeButton.text = if (item.isLike) "UnLike" else "Like"
 
-        binding.likeButton.text = if (item.isLike) "UnLike" else "Like"
-
-        binding.likeButton.setOnClickListener{
+        likeButton.setOnClickListener{
             item.changeLike()
             binding.likeButton.text = if (item.isLike) "UnLike" else "Like"
             updateDummyData()
         }
 
-        binding.buttonBack.setOnClickListener{
+        buttonBack.setOnClickListener{
             val resultIntent = Intent().apply {
-                putExtra("item", item)
+                putExtra(IntentKey.DETAIL_ITEM, item)
             }
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
@@ -66,14 +75,12 @@ class VideoDetailActivity : AppCompatActivity() {
 
     private fun updateDummyData(){
         val dummyData = DummyDataManager.getDummyData().toMutableList()
-        val index = dummyData.indexOfFirst { it.title == item.title }
+        val index = dummyData.indexOfFirst { it.videoTitle == item.videoTitle }
         if (index != -1) {
             dummyData[index] = item
             DummyDataManager.updateDummyData(dummyData)
         }
     }
-
-
 
 
     // 좋아요를 눌러 선택된 아이템을 저장하는 리스트

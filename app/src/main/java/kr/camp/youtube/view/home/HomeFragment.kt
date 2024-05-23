@@ -1,6 +1,5 @@
 package kr.camp.youtube.view.home
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,8 +17,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentHomeBinding
-import kr.camp.youtube.view.Intent.IntentKey
-import kr.camp.youtube.view.detail.VideoDetailActivity
+import kr.camp.youtube.util.ActivityUtil
 import kr.camp.youtube.view.home.state.HomeItem
 import kr.camp.youtube.view.home.adapter.HomeMostPopularAdapter
 import kr.camp.youtube.view.home.adapter.HomeCategoryPopularAdapter
@@ -29,7 +27,6 @@ import kr.camp.youtube.view.home.state.CategoryPopularAddList
 import kr.camp.youtube.view.home.state.CategoryPopularResultEmpty
 import kr.camp.youtube.view.home.state.MostPopularResultEmpty
 import kr.camp.youtube.view.home.state.MostPopularVideoAddList
-
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -54,7 +51,6 @@ class HomeFragment : Fragment() {
             onItemClick = { item -> categoryPopularOnItemClick(item) }
         )
     }
-
     private val homeMostPopularAdapter: HomeMostPopularAdapter by lazy {
         HomeMostPopularAdapter(
             onItemClick = { item -> mostPopularOnItemClick(item) }
@@ -63,20 +59,11 @@ class HomeFragment : Fragment() {
 
 
     private fun categoryPopularOnItemClick(item: HomeItem.CategoryPopularItem) {
-        val intent = Intent(activity, VideoDetailActivity::class.java)
-        val categoryPopularItem = arrayListOf<HomeItem.CategoryPopularItem>(item)
-        intent.putParcelableArrayListExtra(IntentKey.YUKTUBE, categoryPopularItem)
-        startActivity(intent)
+        ActivityUtil.startVideoDetailActivity(requireContext(), item)
     }
-
-
     private fun mostPopularOnItemClick(item: HomeItem.MostPopularItem) {
-        val intent = Intent(activity, VideoDetailActivity::class.java)
-        val mostPopularItem = arrayListOf<HomeItem.MostPopularItem>(item)
-        intent.putParcelableArrayListExtra(IntentKey.YUKTUBE, mostPopularItem)
-        startActivity(intent)
+        ActivityUtil.startVideoDetailActivity(requireContext(), item)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -186,3 +173,15 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
