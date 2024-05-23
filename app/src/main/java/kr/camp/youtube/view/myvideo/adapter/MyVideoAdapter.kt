@@ -1,6 +1,7 @@
 package kr.camp.youtube.view.myvideo.adapter
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,13 +10,13 @@ import com.bumptech.glide.Glide
 import kr.camp.youtube.databinding.ItemMyVideoBinding
 import kr.camp.youtube.view.detail.VideoDetailActivity
 import kr.camp.youtube.view.detail.model.LikeItemModel
+import kr.camp.youtube.view.detail.model.SharedPreferencesManager
 import kr.camp.youtube.view.intent.IntentKey
 import kr.camp.youtube.view.myvideo.state.MyVideoFragment
 
-class MyVideoAdapter(var items: MutableList<LikeItemModel>) :
-    RecyclerView.Adapter<MyVideoAdapter.VideoViewHolder>() {
 
-    private var likedItems: List<LikeItemModel> = items.filter { it.isLike }
+class MyVideoAdapter(private val context: Context, private var items: List<LikeItemModel>) :
+    RecyclerView.Adapter<MyVideoAdapter.VideoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val binding = ItemMyVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,7 +24,7 @@ class MyVideoAdapter(var items: MutableList<LikeItemModel>) :
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
-        val item = likedItems[position]
+        val item = items[position]
 
         //텍스트뷰 로딩
         holder.textView_title.text = item.videoTitle
@@ -34,10 +35,9 @@ class MyVideoAdapter(var items: MutableList<LikeItemModel>) :
             .load(item.thumbnailUrl)
             .into(holder.binding.imageViewThumbnail)
 
-
         //디테일 엑티비티
         holder.binding.root.setOnClickListener {
-            val context = holder.binding.root.context
+            val context = it.context
             val intent = Intent(context, VideoDetailActivity::class.java)
             intent.putExtra(IntentKey.DETAIL_ITEM, item)
             (context as Activity).startActivityForResult(intent, MyVideoFragment.VIDEO_DETAIL_REQUEST_CODE)
@@ -46,12 +46,11 @@ class MyVideoAdapter(var items: MutableList<LikeItemModel>) :
     }
 
     override fun getItemCount(): Int {
-        return likedItems.size
+        return items.size
     }
 
     fun updateItems(newItems: List<LikeItemModel>){
-        items = newItems.toMutableList()
-        likedItems = items.filter { it.isLike }
+        items = newItems
         notifyDataSetChanged()
     }
 
@@ -68,9 +67,7 @@ class MyVideoAdapter(var items: MutableList<LikeItemModel>) :
             constraintLayout.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    items.removeAt(position)
-                    likedItems = items.filter { it.isLike }
-                    notifyItemRemoved(position)
+                    items = items.toMutableList().apply { removeAt(position) }
                 }
             }
         }

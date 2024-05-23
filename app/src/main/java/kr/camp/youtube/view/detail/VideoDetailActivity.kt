@@ -13,9 +13,9 @@ import com.google.gson.reflect.TypeToken
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
 import kr.camp.youtube.extension.toSpanned
-import kr.camp.youtube.view.detail.model.DummyDataManager
 import kr.camp.youtube.view.intent.IntentKey
 import kr.camp.youtube.view.detail.model.LikeItemModel
+import kr.camp.youtube.view.detail.model.SharedPreferencesManager
 import kr.camp.youtube.view.intent.item.DetailItem
 import org.json.JSONArray
 import org.json.JSONException
@@ -122,42 +122,4 @@ class VideoDetailActivity : AppCompatActivity() {
         edit.remove(thumbnailUrl)
         edit.apply()
     }
-
-    fun getPrefLikeItems(key: String) : ArrayList<LikeItemModel> {
-        val sharedPreferences = getSharedPreferences("shared preferences", Context.MODE_PRIVATE)
-        val json = sharedPreferences.getString(key, null)
-        val likeditems = ArrayList<LikeItemModel>()
-        val gson = GsonBuilder().create()
-
-        if (json != null) {
-            try {
-                val jsonArray = JSONArray(json)
-                for (i in 0 until jsonArray.length()) {
-                    val likeitem = gson.fromJson(jsonArray.getJSONObject(i).toString(), LikeItemModel::class.java)
-                    likeditems.add(likeitem)
-                }
-            } catch (e:JSONException) {
-                e.printStackTrace()
-            }
-        }
-        return likeditems
-    }
-
-    /**
-     * 좋아요가 눌린 아이템을 likedItems 리스트에 추가하는 함수입니다.
-     * @param item 좋아요가 눌린 아이템
-     */
-    fun addLikedItem(item: LikeItemModel) {
-        if(!likedItems.contains(item)) {
-            likedItems.add(item)
-        }
-    }
-    /**
-     * 좋아요가 취소된 아이템을 likedItems 리스트에서 제거하는 함수입니다.
-     * @param item 좋아요가 취소된 아이템
-     */
-    fun removeLikedItem(item: LikeItemModel) {
-        likedItems.remove(item)
-    }
-
 }
