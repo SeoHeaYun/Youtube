@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">YouTube</string>
+    <string name="search_bar_hint">YukTube 검색</string>
+    <string name="search_result_not_exist">검색 결과가 없습니다.</string>
+    <string name="search_movie_category">영화</string>
+    <string name="search_education_category">교육</string>
+    <string name="search_sport_category">스포츠</string>
+    <string name="search_music_category">음악</string>
+    <string name="search_game_category">게임</string>
+    <string name="search_news_category">뉴스</string>
+    <string name="search_travel_category">여행</string>
+    <string name="search_animal_category">동물</string>
+    <string name="search_entire_category">전체</string>
+    <string name="video_title_replacer">영상 제목</string>
+    <string name="search_blank_error">검색어를 입력해주세요.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="blue">#1E88E5</color>
     <color name="red">#E53935</color>
     <color name="gray">#707070</color>
+    <color name="detail_button">#F2F2F2</color>
+    <color name="detail_text">#F2F2F2</color>
+    <color name="search_bar_background">#F4F4F4</color>
+    <color name="search_category_background">#F4F4F4</color>
+    <color name="channel_name">#5B5B5B</color>
 </resources>
