@@ -1,5 +1,6 @@
 package kr.camp.youtube.view.detail.model
 
+import android.content.Context
 import kotlinx.parcelize.Parcelize
 import kr.camp.youtube.view.intent.item.DetailItem
 
@@ -51,8 +52,10 @@ object DummyDataManager {
         )
     )
 
-    fun getDummyData(): List<LikeItemModel> {
-        return dummyData
+    fun getDummyData(context: Context): List<LikeItemModel> {
+        return dummyData.map{
+            it.copy(isLike =  SharedPreferencesManager.isLiked(context, it.videoTitle))
+        }
     }
 
     fun updateDummyData(updatedData: List<LikeItemModel>) {

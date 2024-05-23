@@ -9,8 +9,8 @@ import kr.camp.youtube.R
 import kr.camp.youtube.databinding.ActivityVideoDetailBinding
 import kr.camp.youtube.extension.toSpanned
 import kr.camp.youtube.view.intent.IntentKey
-import kr.camp.youtube.view.detail.model.DummyDataManager
 import kr.camp.youtube.view.detail.model.LikeItemModel
+import kr.camp.youtube.view.detail.model.SharedPreferencesManager
 import kr.camp.youtube.view.intent.item.DetailItem
 
 
@@ -54,55 +54,56 @@ class VideoDetailActivity : AppCompatActivity() {
 
         titleTextView.text = detailItem.videoTitle.toSpanned()
         descriptionTextView.text = detailItem.videoDescription.toSpanned()
-        likeButton.text = if (item.isLike) "UnLike" else "Like"
 
-        likeButton.setOnClickListener{
-            item.changeLike()
-            binding.likeButton.text = if (item.isLike) "UnLike" else "Like"
-            updateDummyData()
+        //좋아요 기능 SharedPrefrence 적용
+        val isLiked = SharedPreferencesManager.isLiked(this@VideoDetailActivity, item.videoTitle)
+        likeButton.text = if (isLiked) "UnLike" else "Like"
+
+        likeButton.setOnClickListener {
+            val newLikeStatus = !isLiked
+            SharedPreferencesManager.setLiked(this@VideoDetailActivity, item.videoTitle, newLikeStatus)
+            likeButton.text = if (newLikeStatus) "Unlike" else "Like"
+            item.isLike = newLikeStatus
         }
 
-        buttonBack.setOnClickListener{
-            val resultIntent = Intent().apply {
-                putExtra(IntentKey.DETAIL_ITEM, item)
-            }
-            setResult(Activity.RESULT_OK, resultIntent)
-            finish()
+        buttonBack.setOnClickListener {
+            onBackPressed()
         }
     }
+}
 
-    private fun updateDummyData(){
+    /** private fun updateDummyData() {
         val dummyData = DummyDataManager.getDummyData().toMutableList()
         val index = dummyData.indexOfFirst { it.videoTitle == item.videoTitle }
         if (index != -1) {
             dummyData[index] = item
             DummyDataManager.updateDummyData(dummyData)
         }
-    }
+    } **/
 
 
-    // 좋아요를 눌러 선택된 아이템을 저장하는 리스트
-    var likedItems: ArrayList<LikeItemModel> = ArrayList()
+// 좋아요를 눌러 선택된 아이템을 저장하는 리스트
+/** var likedItems: ArrayList<LikeItemModel> = ArrayList()
 
-    /**
-     * 좋아요가 눌린 아이템을 likedItems 리스트에 추가하는 함수입니다.
-     * @param item 좋아요가 눌린 아이템
-     */
-    fun addLikedItem(item: LikeItemModel) {
-        if(!likedItems.contains(item)) {
-            likedItems.add(item)
-        }
-    }
-    /**
-     * 좋아요가 취소된 아이템을 likedItems 리스트에서 제거하는 함수입니다.
-     * @param item 좋아요가 취소된 아이템
-     */
-    fun removeLikedItem(item: LikeItemModel) {
-        likedItems.remove(item)
-    }
+/**
+ * 좋아요가 눌린 아이템을 likedItems 리스트에 추가하는 함수입니다.
+ * @param item 좋아요가 눌린 아이템
+*/
+fun addLikedItem(item: LikeItemModel) {
+if(!likedItems.contains(item)) {
+likedItems.add(item)
+}
+}
+/**
+ * 좋아요가 취소된 아이템을 likedItems 리스트에서 제거하는 함수입니다.
+ * @param item 좋아요가 취소된 아이템
+*/
+fun removeLikedItem(item: LikeItemModel) {
+likedItems.remove(item)
+}
 
 
 }
-
+ **/
 
 
