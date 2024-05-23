@@ -28,6 +28,8 @@ class VideoDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         overridePendingTransition(R.anim.from_down_enter, R.anim.none)
+//        item = intent.getSerializableExtra("item") as LikeItemModel
+
         setupView()
     }
 

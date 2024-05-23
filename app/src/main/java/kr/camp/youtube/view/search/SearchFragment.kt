@@ -110,6 +110,9 @@ class SearchFragment : Fragment() {
         }
     }
 
+
+
+
     private fun registerSearchBar() = with(binding) {
         val search = {
             if (searchBarEditText.text.isBlank()) {

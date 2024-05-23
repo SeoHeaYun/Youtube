@@ -51,7 +51,6 @@ class HomeFragment : Fragment() {
             onItemClick = { item -> categoryPopularOnItemClick(item) }
         )
     }
-
     private val homeMostPopularAdapter: HomeMostPopularAdapter by lazy {
         HomeMostPopularAdapter(
             onItemClick = { item -> mostPopularOnItemClick(item) }
@@ -62,8 +61,6 @@ class HomeFragment : Fragment() {
     private fun categoryPopularOnItemClick(item: HomeItem.CategoryPopularItem) {
         ActivityUtil.startVideoDetailActivity(requireContext(), item)
     }
-
-
     private fun mostPopularOnItemClick(item: HomeItem.MostPopularItem) {
         ActivityUtil.startVideoDetailActivity(requireContext(), item)
     }
@@ -176,3 +173,15 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

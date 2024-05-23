@@ -88,6 +88,8 @@ class MainActivity : AppCompatActivity() {
         return if (tabIndex == currentPosition) blackIcons[tabIndex] else whiteIcons[tabIndex]
     }
 
+
+
     private companion object {
         val gson = Gson()
     }

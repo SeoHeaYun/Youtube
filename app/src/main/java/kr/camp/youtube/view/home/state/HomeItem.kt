@@ -5,9 +5,6 @@ import kr.camp.youtube.view.key.item.DetailItem
 
 sealed interface HomeItem {
 
-    val thumbnailUrl: String
-    val videoDescription: String
-
     @Parcelize
     data class CategoryPopularItem(
         override val thumbnailUrl: String,

@@ -20,3 +20,9 @@ class SearchViewModelFactory : ViewModelProvider.Factory {
         return SearchViewModel(searchUseCase) as T
     }
 }
+
+
+
+
+
+
