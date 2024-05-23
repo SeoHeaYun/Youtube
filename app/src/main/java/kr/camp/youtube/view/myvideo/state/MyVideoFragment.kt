@@ -1,20 +1,19 @@
 package kr.camp.youtube.view.myvideo.state
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import kr.camp.youtube.R
 import kr.camp.youtube.databinding.FragmentMyVideoBinding
-import kr.camp.youtube.view.detail.model.DummyDataManager.getDummyData
-import kr.camp.youtube.view.detail.model.LikeItemModel
-import kr.camp.youtube.view.intent.IntentKey
 import kr.camp.youtube.view.myvideo.adapter.MyVideoAdapter
+import kr.camp.youtube.view.myvideo.adapter.MyVideoViewModel
+import kr.camp.youtube.view.registry.DetailItemRegistry
 
 
 class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
@@ -23,20 +22,12 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
     private val binding get() = _binding!!
     private lateinit var videoAdapter: MyVideoAdapter
 
-    //컨텍스트
-    private lateinit var mContext: Context
+    //뷰모델
+    private val viewModel: MyVideoViewModel by viewModels()
 
     //리퀘스트 코드
     companion object {
         const val VIDEO_DETAIL_REQUEST_CODE = 1
-    }
-
-    // 사용자의 좋아요를 받은 항목을 저장하는 리스트
-    private var likedItems: List<LikeItemModel> = mutableListOf()
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mContext = context
     }
 
     override fun onCreateView(
@@ -50,39 +41,36 @@ class MyVideoFragment : Fragment(R.layout.fragment_my_video) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentMyVideoBinding.bind(view)
 
-        val gridLayoutManager = GridLayoutManager(requireContext(),2)
+        val gridLayoutManager = GridLayoutManager(requireContext(), 2)
         binding.RecyclerView.layoutManager = gridLayoutManager
 
-        //좋아요 더미데이터 추가
-        likedItems = getDummyData()
-
-        //좋아요 리스트와 어댑터 연결
-        videoAdapter = MyVideoAdapter(likedItems.toMutableList())
+        videoAdapter = MyVideoAdapter()
         binding.RecyclerView.adapter = videoAdapter
 
+        /*viewModel.likedItems.observe(viewLifecycleOwner, Observer { likedItems ->
+            videoAdapter.updateItems(likedItems)
+        })*/
+        viewModel.updateLikedItems()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        DetailItemRegistry.likes
+        videoAdapter.updateItems()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == VIDEO_DETAIL_REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            val updatedItem = data?.getParcelableExtra(IntentKey.DETAIL_ITEM) as? LikeItemModel
-            updatedItem?.let { likeItemModel ->
-                val index = videoAdapter.items.indexOfFirst { likeItemModel.videoTitle == it.videoTitle }
-                if (index != -1) {
-                    videoAdapter.items[index] = likeItemModel
-                    videoAdapter.updateItems(videoAdapter.items)
-                }
-            }
+        if (requestCode == VIDEO_DETAIL_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            viewModel.updateLikedItems()
         }
     }
 
-    override fun onDestroyView(){
+    override fun onDestroyView() {
         super.onDestroyView()
         //메모리 누수를 방지하기 위해 뷰가 파괴될 때 바인딩 객체를 null로 설정
-        _binding= null
+        _binding = null
     }
 
 

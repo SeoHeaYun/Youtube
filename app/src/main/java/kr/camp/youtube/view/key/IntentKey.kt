@@ -1,4 +1,4 @@
-package kr.camp.youtube.view.intent
+package kr.camp.youtube.view.key
 
 object IntentKey {
 
