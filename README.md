@@ -17,7 +17,7 @@
 * [김보라](https://github.com/bora44144) [VideoDetailActivity 개발]
 
 ## 와이어프레임
-<img width="200" alt="전체적인 와이어프레임 간략 뷰" src="https://github.com/SeoHeaYun/Youtube/assets/100404990/864e62f1-a0f8-41f1-b5dd-6436c0368429">
+<img width="500" alt="전체적인 와이어프레임 간략 뷰" src="https://github.com/SeoHeaYun/Youtube/assets/100404990/864e62f1-a0f8-41f1-b5dd-6436c0368429">
 
 ## Git 전략
 * 기능별로 브랜치를 나누고 커밋(풀 리퀘스트)을 할 땐 아래 사진과 같이 작성하였습니다. 
