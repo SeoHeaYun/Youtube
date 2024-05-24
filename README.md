@@ -17,7 +17,7 @@
 * [김보라](https://github.com/bora44144) [VideoDetailActivity 개발]
 
 ## 와이어프레임
-<img width="500" alt="전체적인 와이어프레임 간략 뷰" src="https://github.com/SeoHeaYun/Youtube/assets/100404990/864e62f1-a0f8-41f1-b5dd-6436c0368429">
+![전체적인 와이어프레임 간략 뷰]("https://github.com/SeoHeaYun/Youtube/assets/100404990/864e62f1-a0f8-41f1-b5dd-6436c0368429")
 
 ## Git 전략
 * 기능별로 브랜치를 나누고 커밋(풀 리퀘스트)을 할 땐 아래 사진과 같이 작성하였습니다. 
@@ -26,9 +26,9 @@
 ![깃](https://github.com/SeoHeaYun/Youtube/assets/100404990/772aed02-b82b-41d8-86e0-f05843e659f6)
 
 ## 트러블 슈팅
-![스크린샷 2024-05-24 143833](https://github.com/SeoHeaYun/Youtube/assets/100404990/02eaf915-6f47-47f9-b1f7-aceb3dda9d37)
-![스크린샷 2024-05-24 143841](https://github.com/SeoHeaYun/Youtube/assets/100404990/91d40a63-53a7-439f-91c7-0d3eebcb8861)
-![스크린샷 2024-05-24 143851](https://github.com/SeoHeaYun/Youtube/assets/100404990/547fec7d-8ec2-4857-b1b1-ac396c23ba0d)
+![트러블슈팅1](https://github.com/SeoHeaYun/Youtube/assets/100404990/02eaf915-6f47-47f9-b1f7-aceb3dda9d37)
+![트러블슈팅2](https://github.com/SeoHeaYun/Youtube/assets/100404990/91d40a63-53a7-439f-91c7-0d3eebcb8861)
+![트러블슈팅3](https://github.com/SeoHeaYun/Youtube/assets/100404990/547fec7d-8ec2-4857-b1b1-ac396c23ba0d)
 
 ## 시연 영상
 [유튜브 바로가기](https://youtu.be/9UlTRYE-3vo)
